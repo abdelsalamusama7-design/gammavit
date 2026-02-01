@@ -166,9 +166,9 @@ const CreateTicket = () => {
                   <SelectValue placeholder="—" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">—</SelectItem>
+                  <SelectItem value="none">—</SelectItem>
                   {roles.map((role) => (
-                    <SelectItem key={role.id} value={role.name}>
+                    <SelectItem key={role.id} value={role.name || role.id}>
                       {isRTL ? role.display_name_ar : role.display_name} ({role.name})
                     </SelectItem>
                   ))}

@@ -92,8 +92,9 @@ const navItems: NavItem[] = [
     labelKey: "nav.purchases",
     icon: ShoppingBag,
     submenu: [
-      { labelKey: "nav.purchaseOrders", href: "/purchase-orders", icon: ClipboardList },
-      { labelKey: "nav.suppliers", href: "/suppliers", icon: Truck },
+      { labelKey: "nav.purchaseOrders", href: "/purchase-orders", icon: List },
+      { labelKey: "nav.createPO", href: "/purchase-orders/new", icon: Plus, isAction: true },
+      { labelKey: "nav.vendors", href: "/suppliers", icon: Truck },
     ],
   },
   { labelKey: "nav.manufacturing", icon: Factory, href: "/manufacturing" },

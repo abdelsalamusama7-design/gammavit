@@ -29,9 +29,10 @@ const navItems = [
     label: "المبيعات",
     icon: ShoppingCart,
     submenu: [
-      { label: "الطلبات", href: "/orders" },
+      { label: "كل الطلبات", href: "/orders" },
+      { label: "إنشاء طلب", href: "/orders/new", isAction: true },
       { label: "عروض الأسعار", href: "/quotations" },
-      { label: "الفواتير", href: "/invoices" },
+      { label: "العملاء", href: "/customers" },
     ],
   },
   {

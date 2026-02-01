@@ -29,6 +29,7 @@ import Suppliers from "./pages/purchases/Suppliers";
 
 // Other pages
 import Manufacturing from "./pages/Manufacturing";
+import CreateManufacturingOrder from "./pages/manufacturing/CreateOrder";
 import Users from "./pages/Users";
 import Tickets from "./pages/Tickets";
 
@@ -73,6 +74,7 @@ const App = () => (
             
             {/* Other routes */}
             <Route path="/manufacturing" element={<ProtectedRoute><Manufacturing /></ProtectedRoute>} />
+            <Route path="/manufacturing/create" element={<ProtectedRoute><CreateManufacturingOrder /></ProtectedRoute>} />
             <Route path="/users" element={<ProtectedRoute requiredRole="admin"><Users /></ProtectedRoute>} />
             <Route path="/tickets" element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
             

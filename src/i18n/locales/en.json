@@ -1,0 +1,65 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "sales": "Sales",
+    "inventory": "Inventory",
+    "products": "Products",
+    "purchases": "Purchases",
+    "manufacturing": "Manufacturing",
+    "users": "Users",
+    "tickets": "Tickets",
+    "finance": "Finance",
+    "allOrders": "All Orders",
+    "createOrder": "Create Order",
+    "quotations": "Quotations",
+    "customers": "Customers",
+    "productsList": "Products List",
+    "categories": "Categories",
+    "materials": "Materials",
+    "stockMovement": "Stock Movement",
+    "purchaseOrders": "Purchase Orders",
+    "suppliers": "Suppliers",
+    "accounts": "Accounts",
+    "expenses": "Expenses",
+    "reports": "Reports",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "totalSales": "Total Sales",
+    "totalPaid": "Total / Paid",
+    "totalOrders": "Total Orders",
+    "newPending": "New / Pending",
+    "todayOrders": "Today's Orders",
+    "lowStock": "Low Stock Products",
+    "receivables": "Receivables",
+    "openQuotations": "Open Quotations",
+    "openTickets": "Open Tickets",
+    "unreadNotifications": "Unread Notifications"
+  },
+  "orders": {
+    "recentOrders": "Recent Orders",
+    "viewAll": "View All",
+    "orderNumber": "Order #",
+    "customer": "Customer",
+    "date": "Date",
+    "amount": "Amount",
+    "status": "Status",
+    "new": "New",
+    "pending": "Pending",
+    "completed": "Completed"
+  },
+  "inventory": {
+    "summary": "Inventory Summary",
+    "warehouse": "Warehouse",
+    "quantity": "Quantity",
+    "main": "Main Warehouse",
+    "secondary": "Secondary",
+    "raw": "Raw Materials"
+  },
+  "common": {
+    "factoryName": "Factory",
+    "currency": "SAR"
+  }
+}

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
   TrendingUp,
   ClipboardList,
@@ -14,36 +15,39 @@ import RecentOrders from "@/components/dashboard/RecentOrders";
 import InventorySummary from "@/components/dashboard/InventorySummary";
 
 const Index = () => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === "ar";
+
   return (
-    <div className="min-h-screen bg-background" dir="rtl">
+    <div className="min-h-screen bg-background" dir={isRTL ? "rtl" : "ltr"}>
       <Navbar />
       
       <main className="max-w-[1600px] mx-auto px-4 py-6">
         {/* Stats Grid - Row 1 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <StatCard
-            title="إجمالي المبيعات"
-            subtitle="الإجمالي / المدفوع"
+            title={t("dashboard.totalSales")}
+            subtitle={t("dashboard.totalPaid")}
             value="413,200.00"
             secondaryValue="255,200.00"
             icon={TrendingUp}
             variant="sales"
           />
           <StatCard
-            title="إجمالي الطلبات"
-            subtitle="جديد / قيد التنفيذ"
+            title={t("dashboard.totalOrders")}
+            subtitle={t("dashboard.newPending")}
             value="3 / 2"
             icon={ClipboardList}
             variant="orders"
           />
           <StatCard
-            title="طلبات اليوم"
+            title={t("dashboard.todayOrders")}
             value="0"
             icon={ShoppingCart}
             variant="info"
           />
           <StatCard
-            title="منتجات منخفضة المخزون"
+            title={t("dashboard.lowStock")}
             value="0"
             icon={AlertTriangle}
             variant="warning"
@@ -53,25 +57,25 @@ const Index = () => {
         {/* Stats Grid - Row 2 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <StatCard
-            title="الذمم المدينة"
+            title={t("dashboard.receivables")}
             value="158,000.00"
             icon={DollarSign}
             variant="white"
           />
           <StatCard
-            title="عروض الأسعار المفتوحة"
+            title={t("dashboard.openQuotations")}
             value="1"
             icon={FileText}
             variant="white"
           />
           <StatCard
-            title="التذاكر المفتوحة"
+            title={t("dashboard.openTickets")}
             value="3"
             icon={Ticket}
             variant="white"
           />
           <StatCard
-            title="الإشعارات غير المقروءة"
+            title={t("dashboard.unreadNotifications")}
             value="2"
             icon={Bell}
             variant="white"

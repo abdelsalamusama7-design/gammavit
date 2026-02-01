@@ -112,13 +112,45 @@
     @apply border-border;
   }
 
+  html {
+    /* Safe area for mobile devices with notch */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+
   body {
     @apply bg-background text-foreground font-cairo;
     font-feature-settings: "cv11", "ss01";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Prevent pull-to-refresh on mobile */
+    overscroll-behavior-y: contain;
+    /* Prevent text selection on touch */
+    -webkit-tap-highlight-color: transparent;
+    /* Safe area padding for bottom navigation */
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   html[dir="rtl"] {
     direction: rtl;
+  }
+
+  /* Improve touch targets for mobile */
+  button, a, input, select, textarea {
+    touch-action: manipulation;
+  }
+
+  /* Hide scrollbar on mobile but allow scrolling */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Mobile-optimized inputs */
+  input, select, textarea {
+    font-size: 16px !important; /* Prevent zoom on iOS */
   }
 }
 

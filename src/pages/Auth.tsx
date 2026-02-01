@@ -155,16 +155,20 @@ const Auth = () => {
     <div
       className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-secondary/5 p-4"
       dir={isRTL ? "rtl" : "ltr"}
+      style={{ 
+        paddingTop: 'calc(env(safe-area-inset-top) + 1rem)',
+        paddingBottom: 'calc(env(safe-area-inset-bottom) + 1rem)'
+      }}
     >
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <div className="flex justify-center mb-4">
+      <Card className="w-full max-w-md shadow-xl">
+        <CardHeader className="text-center pb-2">
+          <div className="flex justify-center mb-3">
             <div className="p-3 bg-primary/10 rounded-xl">
-              <Building2 className="h-10 w-10 text-primary" />
+              <Building2 className="h-8 w-8 md:h-10 md:w-10 text-primary" />
             </div>
           </div>
-          <CardTitle className="text-2xl">{t("common.factoryName")}</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-xl md:text-2xl">{t("common.factoryName")}</CardTitle>
+          <CardDescription className="text-sm">
             {isRTL ? "نظام إدارة المصنع" : "Factory Management System"}
           </CardDescription>
         </CardHeader>

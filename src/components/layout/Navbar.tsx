@@ -132,15 +132,15 @@ const Navbar = () => {
   }, [i18n.language, isRTL]);
 
   return (
-    <nav className="bg-primary sticky top-0 z-50 shadow-lg">
+    <nav className="bg-primary sticky top-0 z-50 shadow-lg" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
       <div className="max-w-[1600px] mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14 md:h-16">
           {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
-              <Factory className="w-6 h-6 text-white" />
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-white/20 flex items-center justify-center">
+              <Factory className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-white">{t("common.factoryName")}</span>
+            <span className="text-lg md:text-xl font-bold text-white hidden sm:block">{t("common.factoryName")}</span>
           </div>
 
           {/* Desktop Navigation */}
@@ -191,34 +191,39 @@ const Navbar = () => {
           </div>
 
           {/* User Section */}
-          <div className="flex items-center gap-2">
-            <LanguageSwitcher />
+          <div className="flex items-center gap-1 md:gap-2">
+            <div className="hidden sm:block">
+              <LanguageSwitcher />
+            </div>
             
-            <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/10">
-              <Bell className="w-5 h-5" />
-              <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center bg-destructive text-destructive-foreground text-xs">
+            <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/10 w-9 h-9 md:w-10 md:h-10">
+              <Bell className="w-4 h-4 md:w-5 md:h-5" />
+              <Badge className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 p-0 flex items-center justify-center bg-destructive text-destructive-foreground text-[10px] md:text-xs">
                 2
               </Badge>
             </Button>
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center gap-2 text-white hover:bg-white/10">
-                  <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                    <span className="text-sm font-medium text-white">
+                <Button variant="ghost" className="flex items-center gap-1 md:gap-2 text-white hover:bg-white/10 px-2 md:px-3">
+                  <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/20 flex items-center justify-center">
+                    <span className="text-xs md:text-sm font-medium text-white">
                       {isRTL ? "م" : "O"}
                     </span>
                   </div>
-                  <span className="hidden md:block text-sm font-medium">
+                  <span className="hidden lg:block text-sm font-medium">
                     {isRTL ? "محمد أحمد" : "Omar Ahmed"}
                   </span>
-                  <ChevronDown className="w-4 h-4" />
+                  <ChevronDown className="w-3 h-3 md:w-4 md:h-4 hidden md:block" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>{t("nav.profile")}</DropdownMenuItem>
-                <DropdownMenuItem>{t("nav.settings")}</DropdownMenuItem>
-                <DropdownMenuItem className="text-destructive">{t("nav.logout")}</DropdownMenuItem>
+              <DropdownMenuContent align="end" className="min-w-[160px]">
+                <DropdownMenuItem className="py-3">{t("nav.profile")}</DropdownMenuItem>
+                <DropdownMenuItem className="py-3">{t("nav.settings")}</DropdownMenuItem>
+                <div className="sm:hidden px-2 py-2">
+                  <LanguageSwitcher />
+                </div>
+                <DropdownMenuItem className="text-destructive py-3">{t("nav.logout")}</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -226,7 +231,7 @@ const Navbar = () => {
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden text-white hover:bg-white/10"
+              className="lg:hidden text-white hover:bg-white/10 w-9 h-9 md:w-10 md:h-10"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -236,21 +241,64 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-white/20 animate-fade-in">
+          <div 
+            className="lg:hidden py-4 border-t border-white/20 animate-fade-in max-h-[calc(100vh-4rem)] overflow-y-auto hide-scrollbar"
+            style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 1rem)' }}
+          >
             <div className="flex flex-col gap-1">
               {navItems.map((item) => (
-                <Button
-                  key={item.labelKey}
-                  variant="ghost"
-                  className="justify-start text-white hover:bg-white/10 w-full"
-                  asChild
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Link to={item.href || (item.submenu ? item.submenu[0].href : "/")}>
-                    <item.icon className={`w-4 h-4 ${isRTL ? "ml-2" : "mr-2"}`} />
-                    {t(item.labelKey)}
-                  </Link>
-                </Button>
+                <div key={item.labelKey}>
+                  {item.submenu ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          className="justify-between text-white hover:bg-white/10 w-full h-12 px-4"
+                        >
+                          <div className="flex items-center">
+                            <item.icon className={`w-5 h-5 ${isRTL ? "ml-3" : "mr-3"}`} />
+                            {t(item.labelKey)}
+                          </div>
+                          <ChevronDown className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent 
+                        align="start" 
+                        className="w-[calc(100vw-2rem)] max-w-sm"
+                        sideOffset={0}
+                      >
+                        {item.submenu.map((sub) => {
+                          const SubIcon = sub.icon;
+                          return (
+                            <DropdownMenuItem 
+                              key={sub.labelKey} 
+                              asChild 
+                              className="cursor-pointer gap-3 py-3"
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              <Link to={sub.href}>
+                                {SubIcon && <SubIcon className="w-5 h-5 text-muted-foreground" />}
+                                {t(sub.labelKey)}
+                              </Link>
+                            </DropdownMenuItem>
+                          );
+                        })}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      className="justify-start text-white hover:bg-white/10 w-full h-12 px-4"
+                      asChild
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Link to={item.href || "/"}>
+                        <item.icon className={`w-5 h-5 ${isRTL ? "ml-3" : "mr-3"}`} />
+                        {t(item.labelKey)}
+                      </Link>
+                    </Button>
+                  )}
+                </div>
               ))}
             </div>
           </div>

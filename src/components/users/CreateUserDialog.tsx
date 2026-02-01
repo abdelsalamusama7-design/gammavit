@@ -173,15 +173,15 @@ const CreateUserDialog = ({ open, onOpenChange, onUserCreated }: CreateUserDialo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg" dir={isRTL ? "rtl" : "ltr"}>
+      <DialogContent className="max-w-2xl" dir={isRTL ? "rtl" : "ltr"}>
         <DialogHeader>
-          <DialogTitle>
+          <DialogTitle className="bg-primary text-primary-foreground px-4 py-2 -mx-6 -mt-6 mb-4 rounded-t-lg">
             {isRTL ? "إنشاء مستخدم جديد" : "Create New User"}
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="space-y-4 px-2">
+          <div className="grid grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="fullName">
                 {isRTL ? "الاسم الكامل" : "Full Name"}
@@ -215,7 +215,7 @@ const CreateUserDialog = ({ open, onOpenChange, onUserCreated }: CreateUserDialo
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="email">{isRTL ? "البريد الإلكتروني" : "Email"}</Label>
               <Input
@@ -242,7 +242,7 @@ const CreateUserDialog = ({ open, onOpenChange, onUserCreated }: CreateUserDialo
                 <SelectTrigger>
                   <SelectValue placeholder={isRTL ? "اختر الدور" : "Select Role"} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-background">
                   {roles.map((role) => (
                     <SelectItem key={role.id} value={role.name}>
                       {isRTL ? role.display_name_ar : role.display_name} ({role.name})
@@ -256,7 +256,7 @@ const CreateUserDialog = ({ open, onOpenChange, onUserCreated }: CreateUserDialo
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="password">{isRTL ? "كلمة المرور" : "Password"}</Label>
               <Input
@@ -290,7 +290,7 @@ const CreateUserDialog = ({ open, onOpenChange, onUserCreated }: CreateUserDialo
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 pt-2">
             <Switch
               id="isActive"
               checked={formData.isActive}
@@ -301,10 +301,10 @@ const CreateUserDialog = ({ open, onOpenChange, onUserCreated }: CreateUserDialo
             <Label htmlFor="isActive">{isRTL ? "نشط" : "Active"}</Label>
           </div>
 
-          <div className="flex justify-end gap-2 pt-4">
+          <div className="flex justify-end gap-3 pt-4 border-t mt-6">
             <Button
               type="button"
-              variant="outline"
+              variant="secondary"
               onClick={() => onOpenChange(false)}
             >
               {isRTL ? "إغلاق" : "Close"}

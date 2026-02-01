@@ -27,6 +27,9 @@ import {
   Wallet,
   Receipt,
   BarChart3,
+  Upload,
+  PackageCheck,
+  Layers,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -77,7 +80,11 @@ const navItems: NavItem[] = [
     labelKey: "nav.products",
     icon: Boxes,
     submenu: [
-      { labelKey: "nav.productsList", href: "/products-list", icon: List },
+      { labelKey: "nav.finalProducts", href: "/final-products", icon: PackageCheck },
+      { labelKey: "nav.rawMaterials", href: "/materials", icon: Layers },
+      { labelKey: "nav.allProducts", href: "/products-list", icon: List },
+      { labelKey: "nav.addProduct", href: "/products/new", icon: Plus, isAction: true },
+      { labelKey: "nav.bulkUpload", href: "/products/upload", icon: Upload },
       { labelKey: "nav.categories", href: "/categories", icon: FolderOpen },
     ],
   },

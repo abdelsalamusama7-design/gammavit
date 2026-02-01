@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -34,6 +34,7 @@ import {
   Landmark,
   UserCircle,
   CreditCard,
+  LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -44,6 +45,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface SubMenuItem {
   labelKey: string;
@@ -124,7 +127,27 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { t, i18n } = useTranslation();
   const location = useLocation();
+  const navigate = useNavigate();
   const isRTL = i18n.language === "ar";
+  const { user, profile, signOut } = useAuth();
+  const { toast } = useToast();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      toast({
+        title: isRTL ? "تم تسجيل الخروج" : "Logged out",
+        description: isRTL ? "تم تسجيل خروجك بنجاح" : "You have been logged out successfully",
+      });
+      navigate("/auth");
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: isRTL ? "خطأ" : "Error",
+        description: isRTL ? "حدث خطأ أثناء تسجيل الخروج" : "An error occurred while logging out",
+      });
+    }
+  };
 
   useEffect(() => {
     document.documentElement.dir = isRTL ? "rtl" : "ltr";
@@ -208,22 +231,28 @@ const Navbar = () => {
                 <Button variant="ghost" className="flex items-center gap-1 md:gap-2 text-white hover:bg-white/10 px-2 md:px-3">
                   <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/20 flex items-center justify-center">
                     <span className="text-xs md:text-sm font-medium text-white">
-                      {isRTL ? "م" : "O"}
+                      {profile?.full_name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "U"}
                     </span>
                   </div>
                   <span className="hidden lg:block text-sm font-medium">
-                    {isRTL ? "محمد أحمد" : "Omar Ahmed"}
+                    {profile?.full_name || user?.email?.split("@")[0] || "User"}
                   </span>
                   <ChevronDown className="w-3 h-3 md:w-4 md:h-4 hidden md:block" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="min-w-[160px]">
+              <DropdownMenuContent align="end" className="min-w-[160px] bg-background">
                 <DropdownMenuItem className="py-3">{t("nav.profile")}</DropdownMenuItem>
                 <DropdownMenuItem className="py-3">{t("nav.settings")}</DropdownMenuItem>
                 <div className="sm:hidden px-2 py-2">
                   <LanguageSwitcher />
                 </div>
-                <DropdownMenuItem className="text-destructive py-3">{t("nav.logout")}</DropdownMenuItem>
+                <DropdownMenuItem 
+                  className="text-destructive py-3 gap-2 cursor-pointer"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="w-4 h-4" />
+                  {t("nav.logout")}
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 

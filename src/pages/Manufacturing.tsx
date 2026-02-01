@@ -93,7 +93,7 @@ const Manufacturing = () => {
             <Plus className="w-4 h-4" />
             {isRTL ? "أمر تصنيع جديد" : "New Manufacturing Order"}
           </Button>
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline" className="gap-2" onClick={() => navigate("/manufacturing/instructions")}>
             <FileText className="w-4 h-4" />
             {isRTL ? "تعليمات سير العمل" : "Workflow instructions"}
           </Button>

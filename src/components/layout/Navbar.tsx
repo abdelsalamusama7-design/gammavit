@@ -47,6 +47,7 @@ import { Badge } from "@/components/ui/badge";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface SubMenuItem {
   labelKey: string;
@@ -125,12 +126,51 @@ const navItems: NavItem[] = [
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const { t, i18n } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const isRTL = i18n.language === "ar";
   const { user, profile, signOut } = useAuth();
   const { toast } = useToast();
+
+  // Fetch unread notifications count
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      if (!user) return;
+      
+      const { count, error } = await supabase
+        .from("notifications")
+        .select("*", { count: "exact", head: true })
+        .eq("is_read", false);
+      
+      if (!error && count !== null) {
+        setUnreadCount(count);
+      }
+    };
+
+    fetchUnreadCount();
+
+    // Subscribe to realtime changes
+    const channel = supabase
+      .channel("notifications-count")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "notifications",
+        },
+        () => {
+          fetchUnreadCount();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
 
   const handleLogout = async () => {
     try {
@@ -219,11 +259,18 @@ const Navbar = () => {
               <LanguageSwitcher />
             </div>
             
-            <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/10 w-9 h-9 md:w-10 md:h-10">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="relative text-white hover:bg-white/10 w-9 h-9 md:w-10 md:h-10"
+              onClick={() => navigate("/notifications")}
+            >
               <Bell className="w-4 h-4 md:w-5 md:h-5" />
-              <Badge className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 p-0 flex items-center justify-center bg-destructive text-destructive-foreground text-[10px] md:text-xs">
-                2
-              </Badge>
+              {unreadCount > 0 && (
+                <Badge className="absolute -top-1 -right-1 w-4 h-4 md:w-5 md:h-5 p-0 flex items-center justify-center bg-destructive text-destructive-foreground text-[10px] md:text-xs">
+                  {unreadCount > 99 ? "99+" : unreadCount}
+                </Badge>
+              )}
             </Button>
             
             <DropdownMenu>

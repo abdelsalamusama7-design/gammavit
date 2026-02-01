@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { Plus, FileText, Search, Eye, FileIcon } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ import {
 
 const Manufacturing = () => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const isRTL = i18n.language === "ar";
   const [entriesPerPage, setEntriesPerPage] = useState("25");
 
@@ -87,7 +89,7 @@ const Manufacturing = () => {
 
         {/* Action Buttons */}
         <div className="flex flex-wrap gap-3 mb-6">
-          <Button className="gap-2">
+          <Button className="gap-2" onClick={() => navigate("/manufacturing/create")}>
             <Plus className="w-4 h-4" />
             {isRTL ? "أمر تصنيع جديد" : "New Manufacturing Order"}
           </Button>

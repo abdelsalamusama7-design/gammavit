@@ -16,6 +16,17 @@ import {
   Menu,
   X,
   LucideIcon,
+  List,
+  Plus,
+  ArrowLeftRight,
+  FileText,
+  UserPlus,
+  FolderOpen,
+  ClipboardList,
+  Truck,
+  Wallet,
+  Receipt,
+  BarChart3,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,6 +41,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 interface SubMenuItem {
   labelKey: string;
   href: string;
+  icon?: LucideIcon;
   isAction?: boolean;
 }
 
@@ -46,35 +58,35 @@ const navItems: NavItem[] = [
     labelKey: "nav.sales",
     icon: ShoppingCart,
     submenu: [
-      { labelKey: "nav.allOrders", href: "/orders" },
-      { labelKey: "nav.createOrder", href: "/orders/new", isAction: true },
-      { labelKey: "nav.quotations", href: "/quotations" },
-      { labelKey: "nav.customers", href: "/customers" },
+      { labelKey: "nav.allOrders", href: "/orders", icon: List },
+      { labelKey: "nav.createOrder", href: "/orders/new", icon: Plus, isAction: true },
+      { labelKey: "nav.quotations", href: "/quotations", icon: FileText },
+      { labelKey: "nav.customers", href: "/customers", icon: UserPlus },
     ],
   },
   {
     labelKey: "nav.inventory",
     icon: Package,
     submenu: [
-      { labelKey: "nav.productsList", href: "/products" },
-      { labelKey: "nav.materials", href: "/materials" },
-      { labelKey: "nav.stockMovement", href: "/stock-movement" },
+      { labelKey: "nav.allInventories", href: "/products", icon: List },
+      { labelKey: "nav.addInventory", href: "/products/new", icon: Plus, isAction: true },
+      { labelKey: "nav.transferItems", href: "/stock-movement", icon: ArrowLeftRight },
     ],
   },
   {
     labelKey: "nav.products",
     icon: Boxes,
     submenu: [
-      { labelKey: "nav.productsList", href: "/products-list" },
-      { labelKey: "nav.categories", href: "/categories" },
+      { labelKey: "nav.productsList", href: "/products-list", icon: List },
+      { labelKey: "nav.categories", href: "/categories", icon: FolderOpen },
     ],
   },
   {
     labelKey: "nav.purchases",
     icon: ShoppingBag,
     submenu: [
-      { labelKey: "nav.purchaseOrders", href: "/purchase-orders" },
-      { labelKey: "nav.suppliers", href: "/suppliers" },
+      { labelKey: "nav.purchaseOrders", href: "/purchase-orders", icon: ClipboardList },
+      { labelKey: "nav.suppliers", href: "/suppliers", icon: Truck },
     ],
   },
   { labelKey: "nav.manufacturing", icon: Factory, href: "/manufacturing" },
@@ -84,9 +96,9 @@ const navItems: NavItem[] = [
     labelKey: "nav.finance",
     icon: DollarSign,
     submenu: [
-      { labelKey: "nav.accounts", href: "/accounts" },
-      { labelKey: "nav.expenses", href: "/expenses" },
-      { labelKey: "nav.reports", href: "/reports" },
+      { labelKey: "nav.accounts", href: "/accounts", icon: Wallet },
+      { labelKey: "nav.expenses", href: "/expenses", icon: Receipt },
+      { labelKey: "nav.reports", href: "/reports", icon: BarChart3 },
     ],
   },
 ];
@@ -131,15 +143,18 @@ const Navbar = () => {
                       </div>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="min-w-[160px]">
-                    {item.submenu.map((sub) => (
-                      <DropdownMenuItem key={sub.labelKey} asChild className="cursor-pointer">
-                        <Link to={sub.href}>
-                          {sub.isAction && <span className={isRTL ? "ml-1" : "mr-1"}>+</span>}
-                          {t(sub.labelKey)}
-                        </Link>
-                      </DropdownMenuItem>
-                    ))}
+                  <DropdownMenuContent align="start" className="min-w-[180px] bg-background border shadow-lg z-50">
+                    {item.submenu.map((sub) => {
+                      const SubIcon = sub.icon;
+                      return (
+                        <DropdownMenuItem key={sub.labelKey} asChild className="cursor-pointer gap-2">
+                          <Link to={sub.href}>
+                            {SubIcon && <SubIcon className="w-4 h-4 text-muted-foreground" />}
+                            {t(sub.labelKey)}
+                          </Link>
+                        </DropdownMenuItem>
+                      );
+                    })}
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (

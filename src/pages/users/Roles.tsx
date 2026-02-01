@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
@@ -40,6 +41,7 @@ interface RoleWithStats extends Role {
 
 const Roles = () => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const isRTL = i18n.language === "ar";
   const { toast } = useToast();
 
@@ -130,7 +132,10 @@ const Roles = () => {
             <CardTitle className="text-xl">
               {isRTL ? "الأدوار" : "Roles"}
             </CardTitle>
-            <Button className="gap-2 bg-primary hover:bg-primary/90">
+            <Button 
+              className="gap-2 bg-primary hover:bg-primary/90"
+              onClick={() => navigate("/users/roles/create")}
+            >
               <Plus className="w-4 h-4" />
               {isRTL ? "دور جديد" : "New Role"}
             </Button>

@@ -18,9 +18,9 @@ const Suppliers = () => {
   const isRTL = i18n.language === "ar";
 
   const suppliers = [
-    { id: 1, name: isRTL ? "شركة المواد الأولية" : "Raw Materials Co.", phone: "+966 55 111 2222", email: "info@rawmat.com", balance: "25,000.00" },
-    { id: 2, name: isRTL ? "مصنع التغليف" : "Packaging Factory", phone: "+966 55 333 4444", email: "sales@packfactory.com", balance: "8,500.00" },
-    { id: 3, name: isRTL ? "موردين الكيماويات" : "Chemical Suppliers", phone: "+966 55 555 6666", email: "orders@chemsup.com", balance: "42,000.00" },
+    { id: 1, name: isRTL ? "شركة المواد الأولية" : "Raw Materials Co.", phone: "+20 10 1112 2223", email: "info@rawmat.com", balance: "25,000.00" },
+    { id: 2, name: isRTL ? "مصنع التغليف" : "Packaging Factory", phone: "+20 11 3334 4445", email: "sales@packfactory.com", balance: "8,500.00" },
+    { id: 3, name: isRTL ? "موردين الكيماويات" : "Chemical Suppliers", phone: "+20 12 5556 6667", email: "orders@chemsup.com", balance: "42,000.00" },
   ];
 
   return (

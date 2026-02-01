@@ -30,6 +30,10 @@ import {
   Upload,
   PackageCheck,
   Layers,
+  Lock,
+  Landmark,
+  UserCircle,
+  CreditCard,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -104,9 +108,14 @@ const navItems: NavItem[] = [
     labelKey: "nav.finance",
     icon: DollarSign,
     submenu: [
-      { labelKey: "nav.accounts", href: "/accounts", icon: Wallet },
-      { labelKey: "nav.expenses", href: "/expenses", icon: Receipt },
-      { labelKey: "nav.reports", href: "/reports", icon: BarChart3 },
+      { labelKey: "nav.customerWallets", href: "/customer-wallets", icon: Wallet },
+      { labelKey: "nav.billsPayments", href: "/bills-payments", icon: Receipt },
+      { labelKey: "nav.safes", href: "/safes", icon: Lock },
+      { labelKey: "nav.bankAccounts", href: "/bank-accounts", icon: Landmark },
+      { labelKey: "nav.personalAccounts", href: "/personal-accounts", icon: UserCircle },
+      { labelKey: "nav.transfers", href: "/transfers", icon: ArrowLeftRight },
+      { labelKey: "nav.poPayments", href: "/po-payments", icon: CreditCard },
+      { labelKey: "nav.vendorWallets", href: "/vendor-wallets", icon: Wallet },
     ],
   },
 ];

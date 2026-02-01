@@ -26,6 +26,8 @@
     "addProduct": "إضافة منتج",
     "bulkUpload": "رفع مجمع",
     "purchaseOrders": "أوامر الشراء",
+    "createPO": "إنشاء أمر شراء",
+    "vendors": "الموردين",
     "suppliers": "الموردين",
     "accounts": "الحسابات",
     "expenses": "المصروفات",

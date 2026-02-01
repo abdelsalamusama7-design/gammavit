@@ -26,6 +26,8 @@
     "addProduct": "Add Product",
     "bulkUpload": "Bulk Upload",
     "purchaseOrders": "Purchase Orders",
+    "createPO": "Create PO",
+    "vendors": "Vendors",
     "suppliers": "Suppliers",
     "accounts": "Accounts",
     "expenses": "Expenses",

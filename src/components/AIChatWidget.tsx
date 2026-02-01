@@ -169,10 +169,10 @@ const AIChatWidget = () => {
               </div>
               <div className="flex flex-col">
                 <span className="font-bold text-base">
-                  {isRTL ? "عمر الذكي" : "Omar AI"}
+                  GammaVit AI
                 </span>
                 <span className="text-xs opacity-80">
-                  {isRTL ? "مساعدك الشخصي" : "Your Personal Assistant"}
+                  {isRTL ? "مساعدك الذكي" : "Your AI Assistant"}
                 </span>
               </div>
             </div>
@@ -195,8 +195,8 @@ const AIChatWidget = () => {
                 </div>
                 <p className="text-muted-foreground text-sm">
                   {isRTL 
-                    ? "مرحباً! أنا عمر، مساعدك الذكي. كيف يمكنني مساعدتك اليوم؟"
-                    : "Hello! I'm Omar, your AI assistant. How can I help you today?"
+                    ? "مرحباً! أنا GammaVit AI، مساعدك الذكي. كيف يمكنني مساعدتك اليوم؟"
+                    : "Hello! I'm GammaVit AI, your assistant. How can I help you today?"
                   }
                 </p>
               </div>

@@ -1,0 +1,65 @@
+{
+  "nav": {
+    "dashboard": "لوحة التحكم",
+    "sales": "المبيعات",
+    "inventory": "المخزون",
+    "products": "المنتجات",
+    "purchases": "المشتريات",
+    "manufacturing": "التصنيع",
+    "users": "المستخدمين",
+    "tickets": "التذاكر",
+    "finance": "المالية",
+    "allOrders": "كل الطلبات",
+    "createOrder": "إنشاء طلب",
+    "quotations": "عروض الأسعار",
+    "customers": "العملاء",
+    "productsList": "قائمة المنتجات",
+    "categories": "الفئات",
+    "materials": "المواد الخام",
+    "stockMovement": "حركة المخزون",
+    "purchaseOrders": "أوامر الشراء",
+    "suppliers": "الموردين",
+    "accounts": "الحسابات",
+    "expenses": "المصروفات",
+    "reports": "التقارير",
+    "profile": "الملف الشخصي",
+    "settings": "الإعدادات",
+    "logout": "تسجيل الخروج"
+  },
+  "dashboard": {
+    "totalSales": "إجمالي المبيعات",
+    "totalPaid": "الإجمالي / المدفوع",
+    "totalOrders": "إجمالي الطلبات",
+    "newPending": "جديد / قيد التنفيذ",
+    "todayOrders": "طلبات اليوم",
+    "lowStock": "منتجات منخفضة المخزون",
+    "receivables": "الذمم المدينة",
+    "openQuotations": "عروض الأسعار المفتوحة",
+    "openTickets": "التذاكر المفتوحة",
+    "unreadNotifications": "الإشعارات غير المقروءة"
+  },
+  "orders": {
+    "recentOrders": "أحدث الطلبات",
+    "viewAll": "عرض الكل",
+    "orderNumber": "رقم الطلب",
+    "customer": "العميل",
+    "date": "التاريخ",
+    "amount": "المبلغ",
+    "status": "الحالة",
+    "new": "جديد",
+    "pending": "قيد التنفيذ",
+    "completed": "مكتمل"
+  },
+  "inventory": {
+    "summary": "ملخص المخزون",
+    "warehouse": "المستودع",
+    "quantity": "الكمية",
+    "main": "المستودع الرئيسي",
+    "secondary": "المستودع الفرعي",
+    "raw": "المواد الخام"
+  },
+  "common": {
+    "factoryName": "المصنع",
+    "currency": "ر.س"
+  }
+}

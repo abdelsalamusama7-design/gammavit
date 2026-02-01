@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -23,67 +24,81 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+
+interface SubMenuItem {
+  labelKey: string;
+  href: string;
+  isAction?: boolean;
+}
 
 interface NavItem {
-  label: string;
+  labelKey: string;
   icon: LucideIcon;
   href?: string;
-  submenu?: { label: string; href: string; isAction?: boolean }[];
+  submenu?: SubMenuItem[];
 }
 
 const navItems: NavItem[] = [
-  { label: "لوحة التحكم", icon: LayoutDashboard, href: "/" },
+  { labelKey: "nav.dashboard", icon: LayoutDashboard, href: "/" },
   {
-    label: "المبيعات",
+    labelKey: "nav.sales",
     icon: ShoppingCart,
     submenu: [
-      { label: "كل الطلبات", href: "/orders" },
-      { label: "إنشاء طلب", href: "/orders/new", isAction: true },
-      { label: "عروض الأسعار", href: "/quotations" },
-      { label: "العملاء", href: "/customers" },
+      { labelKey: "nav.allOrders", href: "/orders" },
+      { labelKey: "nav.createOrder", href: "/orders/new", isAction: true },
+      { labelKey: "nav.quotations", href: "/quotations" },
+      { labelKey: "nav.customers", href: "/customers" },
     ],
   },
   {
-    label: "المخزون",
+    labelKey: "nav.inventory",
     icon: Package,
     submenu: [
-      { label: "المنتجات", href: "/products" },
-      { label: "المواد الخام", href: "/materials" },
-      { label: "حركة المخزون", href: "/stock-movement" },
+      { labelKey: "nav.productsList", href: "/products" },
+      { labelKey: "nav.materials", href: "/materials" },
+      { labelKey: "nav.stockMovement", href: "/stock-movement" },
     ],
   },
   {
-    label: "المنتجات",
+    labelKey: "nav.products",
     icon: Boxes,
     submenu: [
-      { label: "قائمة المنتجات", href: "/products-list" },
-      { label: "الفئات", href: "/categories" },
+      { labelKey: "nav.productsList", href: "/products-list" },
+      { labelKey: "nav.categories", href: "/categories" },
     ],
   },
   {
-    label: "المشتريات",
+    labelKey: "nav.purchases",
     icon: ShoppingBag,
     submenu: [
-      { label: "أوامر الشراء", href: "/purchase-orders" },
-      { label: "الموردين", href: "/suppliers" },
+      { labelKey: "nav.purchaseOrders", href: "/purchase-orders" },
+      { labelKey: "nav.suppliers", href: "/suppliers" },
     ],
   },
-  { label: "التصنيع", icon: Factory, href: "/manufacturing" },
-  { label: "المستخدمين", icon: Users, href: "/users" },
-  { label: "التذاكر", icon: Ticket, href: "/tickets" },
+  { labelKey: "nav.manufacturing", icon: Factory, href: "/manufacturing" },
+  { labelKey: "nav.users", icon: Users, href: "/users" },
+  { labelKey: "nav.tickets", icon: Ticket, href: "/tickets" },
   {
-    label: "المالية",
+    labelKey: "nav.finance",
     icon: DollarSign,
     submenu: [
-      { label: "الحسابات", href: "/accounts" },
-      { label: "المصروفات", href: "/expenses" },
-      { label: "التقارير", href: "/reports" },
+      { labelKey: "nav.accounts", href: "/accounts" },
+      { labelKey: "nav.expenses", href: "/expenses" },
+      { labelKey: "nav.reports", href: "/reports" },
     ],
   },
 ];
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === "ar";
+
+  useEffect(() => {
+    document.documentElement.dir = isRTL ? "rtl" : "ltr";
+    document.documentElement.lang = i18n.language;
+  }, [i18n.language, isRTL]);
 
   return (
     <nav className="bg-primary sticky top-0 z-50 shadow-lg">
@@ -94,14 +109,14 @@ const Navbar = () => {
             <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
               <Factory className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold text-white">المصنع</span>
+            <span className="text-xl font-bold text-white">{t("common.factoryName")}</span>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-1">
             {navItems.map((item) =>
               item.submenu ? (
-                <DropdownMenu key={item.label}>
+                <DropdownMenu key={item.labelKey}>
                   <DropdownMenuTrigger asChild>
                     <Button 
                       variant="ghost" 
@@ -109,35 +124,37 @@ const Navbar = () => {
                     >
                       <item.icon className="w-5 h-5" />
                       <div className="flex items-center gap-1 text-xs">
-                        {item.label}
+                        {t(item.labelKey)}
                         <ChevronDown className="w-3 h-3" />
                       </div>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className="min-w-[160px]">
                     {item.submenu.map((sub) => (
-                      <DropdownMenuItem key={sub.label} className="cursor-pointer">
-                        {sub.isAction && <span className="ml-1">+</span>}
-                        {sub.label}
+                      <DropdownMenuItem key={sub.labelKey} className="cursor-pointer">
+                        {sub.isAction && <span className={isRTL ? "ml-1" : "mr-1"}>+</span>}
+                        {t(sub.labelKey)}
                       </DropdownMenuItem>
                     ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
                 <Button 
-                  key={item.label} 
+                  key={item.labelKey} 
                   variant="ghost" 
                   className="flex flex-col items-center gap-1 h-14 px-3 text-white/90 hover:text-white hover:bg-white/10"
                 >
                   <item.icon className="w-5 h-5" />
-                  <span className="text-xs">{item.label}</span>
+                  <span className="text-xs">{t(item.labelKey)}</span>
                 </Button>
               )
             )}
           </div>
 
           {/* User Section */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            
             <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/10">
               <Bell className="w-5 h-5" />
               <Badge className="absolute -top-1 -right-1 w-5 h-5 p-0 flex items-center justify-center bg-destructive text-destructive-foreground text-xs">
@@ -149,16 +166,20 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="flex items-center gap-2 text-white hover:bg-white/10">
                   <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                    <span className="text-sm font-medium text-white">م</span>
+                    <span className="text-sm font-medium text-white">
+                      {isRTL ? "م" : "O"}
+                    </span>
                   </div>
-                  <span className="hidden md:block text-sm font-medium">محمد أحمد</span>
+                  <span className="hidden md:block text-sm font-medium">
+                    {isRTL ? "محمد أحمد" : "Omar Ahmed"}
+                  </span>
                   <ChevronDown className="w-4 h-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>الملف الشخصي</DropdownMenuItem>
-                <DropdownMenuItem>الإعدادات</DropdownMenuItem>
-                <DropdownMenuItem className="text-destructive">تسجيل الخروج</DropdownMenuItem>
+                <DropdownMenuItem>{t("nav.profile")}</DropdownMenuItem>
+                <DropdownMenuItem>{t("nav.settings")}</DropdownMenuItem>
+                <DropdownMenuItem className="text-destructive">{t("nav.logout")}</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -180,12 +201,12 @@ const Navbar = () => {
             <div className="flex flex-col gap-1">
               {navItems.map((item) => (
                 <Button
-                  key={item.label}
+                  key={item.labelKey}
                   variant="ghost"
                   className="justify-start text-white hover:bg-white/10 w-full"
                 >
-                  <item.icon className="w-4 h-4 ml-2" />
-                  {item.label}
+                  <item.icon className={`w-4 h-4 ${isRTL ? "ml-2" : "mr-2"}`} />
+                  {t(item.labelKey)}
                 </Button>
               ))}
             </div>

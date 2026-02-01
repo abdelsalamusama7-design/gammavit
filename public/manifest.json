@@ -1,0 +1,20 @@
+{
+  "name": "GammaVet - Factory Management System",
+  "short_name": "GammaVet",
+  "description": "GammaVet Factory Management System - نظام إدارة المصنع",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#1e3a5f",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "en",
+  "dir": "auto"
+}

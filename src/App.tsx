@@ -32,6 +32,7 @@ import Manufacturing from "./pages/Manufacturing";
 import CreateManufacturingOrder from "./pages/manufacturing/CreateOrder";
 import WorkflowInstructions from "./pages/manufacturing/WorkflowInstructions";
 import Users from "./pages/Users";
+import TransferData from "./pages/users/TransferData";
 import Tickets from "./pages/Tickets";
 
 // Finance pages
@@ -78,6 +79,7 @@ const App = () => (
             <Route path="/manufacturing/create" element={<ProtectedRoute><CreateManufacturingOrder /></ProtectedRoute>} />
             <Route path="/manufacturing/instructions" element={<ProtectedRoute><WorkflowInstructions /></ProtectedRoute>} />
             <Route path="/users" element={<ProtectedRoute requiredRole="admin"><Users /></ProtectedRoute>} />
+            <Route path="/users/transfer" element={<ProtectedRoute requiredRole="admin"><TransferData /></ProtectedRoute>} />
             <Route path="/tickets" element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
             
             {/* Finance routes */}

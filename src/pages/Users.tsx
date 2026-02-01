@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { Plus, Shield, ArrowLeftRight, Pencil, Trash2, Lock, Loader2 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
@@ -51,6 +52,7 @@ interface Role {
 
 const Users = () => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const isRTL = i18n.language === "ar";
   const { toast } = useToast();
   
@@ -145,7 +147,11 @@ const Users = () => {
                 <Shield className="w-4 h-4" />
                 {isRTL ? "الأدوار" : "Roles"}
               </Button>
-              <Button variant="outline" className="gap-2">
+              <Button 
+                variant="outline" 
+                className="gap-2"
+                onClick={() => navigate("/users/transfer")}
+              >
                 <ArrowLeftRight className="w-4 h-4" />
                 {isRTL ? "نقل البيانات" : "Transfer Data"}
               </Button>

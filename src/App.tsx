@@ -37,6 +37,7 @@ import Roles from "./pages/users/Roles";
 import CreateRole from "./pages/users/CreateRole";
 import Notifications from "./pages/Notifications";
 import Tickets from "./pages/Tickets";
+import CreateTicket from "./pages/tickets/CreateTicket";
 
 // Finance pages
 import Accounts from "./pages/finance/Accounts";
@@ -87,6 +88,7 @@ const App = () => (
             <Route path="/users/roles/create" element={<ProtectedRoute requiredRole="admin"><CreateRole /></ProtectedRoute>} />
             <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
             <Route path="/tickets" element={<ProtectedRoute><Tickets /></ProtectedRoute>} />
+            <Route path="/tickets/create" element={<ProtectedRoute><CreateTicket /></ProtectedRoute>} />
             
             {/* Finance routes */}
             <Route path="/accounts" element={<ProtectedRoute><Accounts /></ProtectedRoute>} />

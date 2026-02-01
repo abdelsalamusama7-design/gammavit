@@ -18,10 +18,10 @@ const Customers = () => {
   const isRTL = i18n.language === "ar";
 
   const customers = [
-    { id: 1, name: isRTL ? "أحمد محمد" : "Ahmed Mohamed", phone: "+966 55 123 4567", email: "ahmed@example.com", balance: "12,500.00" },
-    { id: 2, name: isRTL ? "سارة علي" : "Sara Ali", phone: "+966 55 234 5678", email: "sara@example.com", balance: "0.00" },
-    { id: 3, name: isRTL ? "شركة الفجر" : "Al-Fajr Co.", phone: "+966 55 345 6789", email: "info@alfajr.com", balance: "45,000.00" },
-    { id: 4, name: isRTL ? "مؤسسة النور" : "Al-Nour Est.", phone: "+966 55 456 7890", email: "contact@alnour.com", balance: "8,200.00" },
+    { id: 1, name: isRTL ? "أحمد محمد" : "Ahmed Mohamed", phone: "+20 10 1234 5678", email: "ahmed@example.com", balance: "12,500.00" },
+    { id: 2, name: isRTL ? "سارة علي" : "Sara Ali", phone: "+20 11 2345 6789", email: "sara@example.com", balance: "0.00" },
+    { id: 3, name: isRTL ? "شركة الفجر" : "Al-Fajr Co.", phone: "+20 12 3456 7890", email: "info@alfajr.com", balance: "45,000.00" },
+    { id: 4, name: isRTL ? "مؤسسة النور" : "Al-Nour Est.", phone: "+20 10 4567 8901", email: "contact@alnour.com", balance: "8,200.00" },
   ];
 
   return (

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -93,6 +94,7 @@ const navItems: NavItem[] = [
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { t, i18n } = useTranslation();
+  const location = useLocation();
   const isRTL = i18n.language === "ar";
 
   useEffect(() => {
@@ -131,9 +133,11 @@ const Navbar = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className="min-w-[160px]">
                     {item.submenu.map((sub) => (
-                      <DropdownMenuItem key={sub.labelKey} className="cursor-pointer">
-                        {sub.isAction && <span className={isRTL ? "ml-1" : "mr-1"}>+</span>}
-                        {t(sub.labelKey)}
+                      <DropdownMenuItem key={sub.labelKey} asChild className="cursor-pointer">
+                        <Link to={sub.href}>
+                          {sub.isAction && <span className={isRTL ? "ml-1" : "mr-1"}>+</span>}
+                          {t(sub.labelKey)}
+                        </Link>
                       </DropdownMenuItem>
                     ))}
                   </DropdownMenuContent>
@@ -142,10 +146,13 @@ const Navbar = () => {
                 <Button 
                   key={item.labelKey} 
                   variant="ghost" 
-                  className="flex flex-col items-center gap-1 h-14 px-3 text-white/90 hover:text-white hover:bg-white/10"
+                  className={`flex flex-col items-center gap-1 h-14 px-3 text-white/90 hover:text-white hover:bg-white/10 ${location.pathname === item.href ? "bg-white/20" : ""}`}
+                  asChild
                 >
-                  <item.icon className="w-5 h-5" />
-                  <span className="text-xs">{t(item.labelKey)}</span>
+                  <Link to={item.href || "/"}>
+                    <item.icon className="w-5 h-5" />
+                    <span className="text-xs">{t(item.labelKey)}</span>
+                  </Link>
                 </Button>
               )
             )}
@@ -204,9 +211,13 @@ const Navbar = () => {
                   key={item.labelKey}
                   variant="ghost"
                   className="justify-start text-white hover:bg-white/10 w-full"
+                  asChild
+                  onClick={() => setMobileMenuOpen(false)}
                 >
-                  <item.icon className={`w-4 h-4 ${isRTL ? "ml-2" : "mr-2"}`} />
-                  {t(item.labelKey)}
+                  <Link to={item.href || (item.submenu ? item.submenu[0].href : "/")}>
+                    <item.icon className={`w-4 h-4 ${isRTL ? "ml-2" : "mr-2"}`} />
+                    {t(item.labelKey)}
+                  </Link>
                 </Button>
               ))}
             </div>

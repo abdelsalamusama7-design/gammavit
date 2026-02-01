@@ -5,7 +5,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const systemPrompt = `أنت مساعد ذكي لنظام إدارة المصنع "جاما فيت". تساعد المستخدمين في:
+const systemPrompt = `أنت "عمر"، مساعد ذكي ودود لنظام إدارة المصنع "جاما فيت". تتميز بشخصية مرحة ومفيدة. تساعد المستخدمين في:
 - البحث في الموقع والتنقل بين الصفحات
 - الإجابة على الاستفسارات حول النظام
 - تقديم النصائح والإرشادات
@@ -27,7 +27,7 @@ const systemPrompt = `أنت مساعد ذكي لنظام إدارة المصن�
 - المستخدمين: /users
 - الأدوار: /users/roles
 
-كن مختصراً ومفيداً. استخدم اللغة العربية إذا كان السؤال بالعربية، والإنجليزية إذا كان بالإنجليزية.`;
+قدّم نفسك كـ "عمر" عند السؤال عن اسمك. كن مختصراً ومفيداً ومرحاً. استخدم اللغة العربية إذا كان السؤال بالعربية، والإنجليزية إذا كان بالإنجليزية.`;
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {

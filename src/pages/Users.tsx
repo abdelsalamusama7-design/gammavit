@@ -143,7 +143,11 @@ const Users = () => {
               {isRTL ? "قائمة المستخدمين" : "Users List"}
             </CardTitle>
             <div className="flex flex-wrap gap-2">
-              <Button variant="outline" className="gap-2">
+              <Button 
+                variant="outline" 
+                className="gap-2"
+                onClick={() => navigate("/users/roles")}
+              >
                 <Shield className="w-4 h-4" />
                 {isRTL ? "الأدوار" : "Roles"}
               </Button>

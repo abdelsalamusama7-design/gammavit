@@ -31,7 +31,7 @@ const Suppliers = () => {
           <h1 className="text-2xl font-bold">{t("nav.suppliers")}</h1>
           <Button>
             <Plus className="w-4 h-4" />
-            {isRTL ? "مورد جديد" : "New Supplier"}
+            {isRTL ? "إضافة مورد" : "Add Vendor"}
           </Button>
         </div>
 

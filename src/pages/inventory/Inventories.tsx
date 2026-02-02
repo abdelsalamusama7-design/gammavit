@@ -23,8 +23,10 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import AddInventoryDialog from "@/components/inventories/AddInventoryDialog";
 
 const Inventories = () => {
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === "ar";
 
@@ -68,7 +70,7 @@ const Inventories = () => {
   };
 
   const handleAddInventory = () => {
-    toast.info(isRTL ? "إضافة مخزن جديد" : "Add new inventory");
+    setAddDialogOpen(true);
   };
 
   const handleTransferItems = () => {
@@ -78,6 +80,7 @@ const Inventories = () => {
   return (
     <div className="min-h-screen bg-background" dir={isRTL ? "rtl" : "ltr"}>
       <Navbar />
+      <AddInventoryDialog open={addDialogOpen} onOpenChange={setAddDialogOpen} />
       <main className="max-w-[1600px] mx-auto px-4 py-6">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
@@ -89,7 +92,7 @@ const Inventories = () => {
               <Plus className="w-4 h-4" />
               {isRTL ? "إضافة مخزن" : "Add Inventory"}
             </Button>
-            <Button variant="default" className="bg-green-600 hover:bg-green-700" onClick={handleTransferItems}>
+            <Button variant="secondary" className="bg-green-600 hover:bg-green-700 text-white" onClick={handleTransferItems}>
               <ArrowLeftRight className="w-4 h-4" />
               {isRTL ? "تحويل العناصر" : "Transfer Items"}
             </Button>

@@ -125,10 +125,10 @@ const Categories = () => {
                   onValueChange={(val) => setNewCategory({ ...newCategory, parentCategory: val })}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder={isRTL ? "-- اختر الفئة الأم --" : "-- Select Parent Category --"} />
+                    <SelectValue placeholder={isRTL ? "-- لا يوجد أب --" : "-- No Parent --"} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">{isRTL ? "لا يوجد" : "None"}</SelectItem>
+                    <SelectItem value="none">{isRTL ? "-- لا يوجد أب --" : "-- No Parent --"}</SelectItem>
                     {parentCategories.map((cat) => (
                       <SelectItem key={cat} value={cat}>{cat}</SelectItem>
                     ))}
@@ -146,10 +146,10 @@ const Categories = () => {
             </div>
             <DialogFooter className="gap-2">
               <Button variant="outline" onClick={() => setAddDialogOpen(false)}>
-                {isRTL ? "إلغاء" : "Cancel"}
+                {isRTL ? "إغلاق" : "Close"}
               </Button>
               <Button onClick={handleAddCategory}>
-                {isRTL ? "حفظ" : "Save"}
+                {isRTL ? "حفظ الفئة" : "Save Category"}
               </Button>
             </DialogFooter>
           </DialogContent>

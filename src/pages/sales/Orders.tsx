@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { Plus, Search, Filter } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 
 const Orders = () => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const isRTL = i18n.language === "ar";
 
   const orders = [
@@ -46,7 +48,7 @@ const Orders = () => {
       <main className="max-w-[1600px] mx-auto px-4 py-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
           <h1 className="text-2xl font-bold">{t("nav.allOrders")}</h1>
-          <Button>
+          <Button onClick={() => navigate("/orders/create")}>
             <Plus className="w-4 h-4" />
             {t("nav.createOrder")}
           </Button>

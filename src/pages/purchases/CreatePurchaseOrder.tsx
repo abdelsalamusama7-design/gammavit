@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Plus, Trash2, Search } from "lucide-react";
+import { Trash2, Search } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,10 +24,13 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import SelectProductDialog from "@/components/purchases/SelectProductDialog";
 
 interface OrderItem {
   id: string;
-  product: string;
+  productId: string;
+  productName: string;
+  productSku: string;
   quantity: number;
   unitPrice: number;
   total: number;
@@ -45,6 +48,7 @@ const CreatePurchaseOrder = () => {
   const [notes, setNotes] = useState("");
   const [searchProduct, setSearchProduct] = useState("");
   const [items, setItems] = useState<OrderItem[]>([]);
+  const [isProductDialogOpen, setIsProductDialogOpen] = useState(false);
 
   // Mock vendors data
   const vendors = [
@@ -53,22 +57,17 @@ const CreatePurchaseOrder = () => {
     { id: "3", name: "PharmaChem", contacts: ["Omar Magdy", "IT Help"] },
   ];
 
-  // Mock products data
-  const products = [
-    { id: "1", name: isRTL ? "مادة خام أ" : "Raw Material A", price: 100 },
-    { id: "2", name: isRTL ? "مادة خام ب" : "Raw Material B", price: 150 },
-    { id: "3", name: isRTL ? "مواد تغليف" : "Packaging Materials", price: 50 },
-  ];
-
   const selectedVendor = vendors.find(v => v.id === vendor);
 
-  const addItem = () => {
+  const handleSelectProduct = (product: { id: string; sku: string; name: string; nameAr: string; price: number }) => {
     const newItem: OrderItem = {
       id: Date.now().toString(),
-      product: "",
+      productId: product.id,
+      productName: isRTL ? product.nameAr : product.name,
+      productSku: product.sku,
       quantity: 1,
-      unitPrice: 0,
-      total: 0,
+      unitPrice: product.price,
+      total: product.price,
     };
     setItems([...items, newItem]);
   };
@@ -77,21 +76,27 @@ const CreatePurchaseOrder = () => {
     setItems(items.filter(item => item.id !== id));
   };
 
-  const updateItem = (id: string, field: keyof OrderItem, value: string | number) => {
+  const updateItemQuantity = (id: string, quantity: number) => {
     setItems(items.map(item => {
       if (item.id === id) {
-        const updated = { ...item, [field]: value };
-        if (field === 'quantity' || field === 'unitPrice') {
-          updated.total = updated.quantity * updated.unitPrice;
-        }
-        if (field === 'product') {
-          const product = products.find(p => p.id === value);
-          if (product) {
-            updated.unitPrice = product.price;
-            updated.total = updated.quantity * product.price;
-          }
-        }
-        return updated;
+        return {
+          ...item,
+          quantity,
+          total: quantity * item.unitPrice
+        };
+      }
+      return item;
+    }));
+  };
+
+  const updateItemPrice = (id: string, unitPrice: number) => {
+    setItems(items.map(item => {
+      if (item.id === id) {
+        return {
+          ...item,
+          unitPrice,
+          total: item.quantity * unitPrice
+        };
       }
       return item;
     }));
@@ -230,7 +235,7 @@ const CreatePurchaseOrder = () => {
                     className={`w-64 ${isRTL ? "pr-9" : "pl-9"}`}
                   />
                 </div>
-                <Button onClick={addItem} size="sm">
+                <Button onClick={() => setIsProductDialogOpen(true)} size="sm">
                   {isRTL ? "إضافة عنصر" : "Add Item"}
                 </Button>
               </div>
@@ -258,30 +263,17 @@ const CreatePurchaseOrder = () => {
                   items.map((item) => (
                     <TableRow key={item.id}>
                       <TableCell>
-                        <Select
-                          value={item.product}
-                          onValueChange={(value) => updateItem(item.id, 'product', value)}
-                        >
-                          <SelectTrigger className="w-48">
-                            <SelectValue placeholder={isRTL ? "اختر منتج" : "Select product"} />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {products
-                              .filter(p => p.name.toLowerCase().includes(searchProduct.toLowerCase()))
-                              .map((product) => (
-                                <SelectItem key={product.id} value={product.id}>
-                                  {product.name}
-                                </SelectItem>
-                              ))}
-                          </SelectContent>
-                        </Select>
+                        <div>
+                          <span className="font-medium">{item.productName}</span>
+                          <span className="text-xs text-muted-foreground block">{item.productSku}</span>
+                        </div>
                       </TableCell>
                       <TableCell>
                         <Input
                           type="number"
                           min="1"
                           value={item.quantity}
-                          onChange={(e) => updateItem(item.id, 'quantity', parseInt(e.target.value) || 0)}
+                          onChange={(e) => updateItemQuantity(item.id, parseInt(e.target.value) || 0)}
                           className="w-24"
                         />
                       </TableCell>
@@ -291,7 +283,7 @@ const CreatePurchaseOrder = () => {
                           min="0"
                           step="0.01"
                           value={item.unitPrice}
-                          onChange={(e) => updateItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
+                          onChange={(e) => updateItemPrice(item.id, parseFloat(e.target.value) || 0)}
                           className="w-32"
                         />
                       </TableCell>
@@ -345,6 +337,12 @@ const CreatePurchaseOrder = () => {
           <span>Version 1.0.0</span>
         </div>
       </main>
+
+      <SelectProductDialog
+        open={isProductDialogOpen}
+        onOpenChange={setIsProductDialogOpen}
+        onSelect={handleSelectProduct}
+      />
     </div>
   );
 };

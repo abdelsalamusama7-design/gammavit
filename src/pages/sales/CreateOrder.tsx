@@ -62,20 +62,35 @@ const CreateSalesOrder = () => {
   const [shippingCost, setShippingCost] = useState("no_shipping");
   const [shippingAmount, setShippingAmount] = useState(0);
 
-  // Mock customers data
-  const customers = [
-    { id: "1", name: isRTL ? "أحمد محمد" : "Ahmed Mohamed", contacts: ["Ahmed", "Mohamed"] },
-    { id: "2", name: isRTL ? "سارة علي" : "Sara Ali", contacts: ["Sara", "Ali"] },
-    { id: "3", name: isRTL ? "محمود حسن" : "Mahmoud Hassan", contacts: ["Mahmoud", "Hassan"] },
-  ];
-
   // Mock factories data
   const factories = [
-    { id: "1", name: isRTL ? "المصنع الرئيسي" : "Main Factory" },
-    { id: "2", name: isRTL ? "المصنع الفرعي" : "Sub Factory" },
+    { id: "1", name: "GammaVet", nameAr: "جاما فيت" },
+    { id: "2", name: "Naturous", nameAr: "ناتورس" },
+    { id: "3", name: "N/A", nameAr: "غير محدد" },
+  ];
+
+  // Mock customers data with factory reference
+  const customers = [
+    { id: "1", name: isRTL ? "أحمد محمد" : "Ahmed Mohamed", contacts: ["Ahmed", "Mohamed"], factoryId: "1" },
+    { id: "2", name: isRTL ? "سارة علي" : "Sara Ali", contacts: ["Sara", "Ali"], factoryId: "2" },
+    { id: "3", name: isRTL ? "محمود حسن" : "Mahmoud Hassan", contacts: ["Mahmoud", "Hassan"], factoryId: "1" },
+    { id: "4", name: "omar Magdy", contacts: ["Omar"], factoryId: "2" },
+    { id: "5", name: isRTL ? "ابو الليف" : "Abo Elleif", contacts: ["Abo Elleif"], factoryId: "2" },
+    { id: "6", name: isRTL ? "د.احمد عنب" : "Dr. Ahmed Enab", contacts: ["Dr. Ahmed"], factoryId: "3" },
   ];
 
   const selectedCustomer = customers.find(c => c.id === customer);
+  const selectedFactory = factories.find(f => f.id === selectedCustomer?.factoryId);
+
+  // Auto-set factory when customer changes
+  const handleCustomerChange = (customerId: string) => {
+    setCustomer(customerId);
+    const cust = customers.find(c => c.id === customerId);
+    if (cust?.factoryId) {
+      setFactory(cust.factoryId);
+    }
+    setContactPerson(""); // Reset contact person when customer changes
+  };
 
   const handleSelectProduct = (product: { id: string; sku: string; name: string; nameAr: string; price: number }) => {
     const newItem: OrderItem = {
@@ -215,7 +230,7 @@ const CreateSalesOrder = () => {
               {/* Customer */}
               <div className="space-y-2">
                 <Label>{isRTL ? "العميل" : "Customer"}</Label>
-                <Select value={customer} onValueChange={setCustomer}>
+                <Select value={customer} onValueChange={handleCustomerChange}>
                   <SelectTrigger>
                     <SelectValue placeholder={isRTL ? "اختر العميل" : "Select Customer"} />
                   </SelectTrigger>
@@ -231,6 +246,16 @@ const CreateSalesOrder = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Factory - Auto-filled based on customer */}
+              <div className="space-y-2">
+                <Label>{isRTL ? "المصنع" : "Factory"}</Label>
+                <Input 
+                  value={selectedFactory ? (isRTL ? selectedFactory.nameAr : selectedFactory.name) : (isRTL ? "اختر العميل أولاً" : "Select customer first")} 
+                  disabled 
+                  className="bg-muted"
+                />
+              </div>
+
               {/* Contact Person */}
               <div className="space-y-2">
                 <Label>{isRTL ? "جهة الاتصال" : "Contact Person"}</Label>
@@ -246,23 +271,6 @@ const CreateSalesOrder = () => {
                     {selectedCustomer?.contacts.map((contact) => (
                       <SelectItem key={contact} value={contact}>
                         {contact}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Factory */}
-              <div className="space-y-2">
-                <Label>{isRTL ? "المصنع" : "Factory"}</Label>
-                <Select value={factory} onValueChange={setFactory}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={isRTL ? "اختر العميل" : "Select customer"} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {factories.map((f) => (
-                      <SelectItem key={f.id} value={f.id}>
-                        {f.name}
                       </SelectItem>
                     ))}
                   </SelectContent>

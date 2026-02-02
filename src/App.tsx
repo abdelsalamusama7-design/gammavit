@@ -21,6 +21,7 @@ import Factories from "./pages/customers/Factories";
 
 // Inventory pages
 import Products from "./pages/inventory/Products";
+import FinalProducts from "./pages/inventory/FinalProducts";
 import Materials from "./pages/inventory/Materials";
 import StockMovement from "./pages/inventory/StockMovement";
 import Inventories from "./pages/inventory/Inventories";
@@ -78,6 +79,8 @@ const App = () => (
             {/* Inventory routes */}
             <Route path="/inventories" element={<ProtectedRoute><Inventories /></ProtectedRoute>} />
             <Route path="/inventories/transfer" element={<ProtectedRoute><TransferItems /></ProtectedRoute>} />
+            <Route path="/final-products" element={<ProtectedRoute><FinalProducts /></ProtectedRoute>} />
+            <Route path="/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />
             <Route path="/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />
             <Route path="/materials" element={<ProtectedRoute><Materials /></ProtectedRoute>} />
             <Route path="/stock-movement" element={<ProtectedRoute><StockMovement /></ProtectedRoute>} />

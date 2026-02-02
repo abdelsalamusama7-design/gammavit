@@ -32,11 +32,13 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import AddCustomerDialog from "@/components/customers/AddCustomerDialog";
+import { useCustomers } from "@/contexts/CustomersContext";
 
 const Customers = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const isRTL = i18n.language === "ar";
+  const { customers, removeCustomer } = useCustomers();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState("25");
@@ -56,21 +58,6 @@ const Customers = () => {
     }
   };
 
-  const customers = [
-    { id: 2, name: "Eslam 1", type: "Factory", factory: "GammaVet", email: "", phone: "01000000000", walletBalance: "0.00" },
-    { id: 1, name: "omar Magdy", type: "Factory", factory: "Naturous", email: "omar.adapq32@dslapl.com", phone: "01554945448", walletBalance: "6,000.00" },
-    { id: 8, name: isRTL ? "ابو الليف" : "Abo Elleif", type: "Factory", factory: "Naturous", email: "", phone: "01212123457", walletBalance: "0.00" },
-    { id: 7, name: isRTL ? "ابو عدي" : "Abo Ady", type: "Factory", factory: "N/A", email: "", phone: "", walletBalance: "0.00" },
-    { id: 6, name: isRTL ? "الشيخ مصطفي" : "El Sheikh Mostafa", type: "Factory", factory: "N/A", email: "", phone: "", walletBalance: "0.00" },
-    { id: 4, name: isRTL ? "بروكسي" : "Proxy", type: "Factory", factory: "N/A", email: "", phone: "", walletBalance: "0.00" },
-    { id: 21, name: isRTL ? "د.ابراهيم" : "Dr. Ibrahim", type: "Factory", factory: "N/A", email: "", phone: "", walletBalance: "0.00" },
-    { id: 11, name: isRTL ? "د.احمد عنب" : "Dr. Ahmed Enab", type: "Factory", factory: "N/A", email: "", phone: "", walletBalance: "0.00" },
-    { id: 16, name: isRTL ? "د.احمد ممدوح" : "Dr. Ahmed Mamdouh", type: "Factory", factory: "N/A", email: "", phone: "", walletBalance: "0.00" },
-    { id: 26, name: isRTL ? "د.اسلام مبارك" : "Dr. Islam Mubarak", type: "Factory", factory: "N/A", email: "", phone: "", walletBalance: "0.00" },
-    { id: 18, name: isRTL ? "د.حمادي" : "Dr. Hamady", type: "Factory", factory: "N/A", email: "", phone: "", walletBalance: "0.00" },
-    { id: 24, name: isRTL ? "د.طه" : "Dr. Taha", type: "Factory", factory: "N/A", email: "", phone: "", walletBalance: "0.00" },
-  ];
-
   // Filter customers based on search
   const filteredCustomers = customers.filter(c => 
     searchQuery === "" || 
@@ -83,7 +70,12 @@ const Customers = () => {
   const startEntry = totalEntries > 0 ? 1 : 0;
   const endEntry = totalEntries;
 
-  const handleAction = (action: string, customerId: number) => {
+  const handleAction = (action: string, customerId: string) => {
+    if (action === "Delete") {
+      removeCustomer(customerId);
+      toast.success(isRTL ? "تم حذف العميل" : "Customer deleted");
+      return;
+    }
     toast.info(`${action} for customer ID: ${customerId}`);
   };
 
@@ -186,7 +178,7 @@ const Customers = () => {
                           {isRTL ? "مصنع" : "Factory"}
                         </Badge>
                       </TableCell>
-                      <TableCell>{customer.factory}</TableCell>
+                      <TableCell>{customer.factoryName}</TableCell>
                       <TableCell>{customer.email || "-"}</TableCell>
                       <TableCell>{customer.phone || "-"}</TableCell>
                       <TableCell>{customer.walletBalance}</TableCell>

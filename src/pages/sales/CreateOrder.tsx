@@ -26,6 +26,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import SelectProductDialog from "@/components/purchases/SelectProductDialog";
+import { useCustomers } from "@/contexts/CustomersContext";
 
 interface OrderItem {
   id: string;
@@ -42,6 +43,7 @@ const CreateSalesOrder = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const isRTL = i18n.language === "ar";
+  const { customers } = useCustomers();
 
   // Generate Order ID
   const orderId = `ORD-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
@@ -62,21 +64,11 @@ const CreateSalesOrder = () => {
   const [shippingCost, setShippingCost] = useState("no_shipping");
   const [shippingAmount, setShippingAmount] = useState(0);
 
-  // Mock factories data
+  // Factories data
   const factories = [
     { id: "1", name: "GammaVet", nameAr: "جاما فيت" },
     { id: "2", name: "Naturous", nameAr: "ناتورس" },
     { id: "3", name: "N/A", nameAr: "غير محدد" },
-  ];
-
-  // Mock customers data with factory reference
-  const customers = [
-    { id: "1", name: isRTL ? "أحمد محمد" : "Ahmed Mohamed", contacts: ["Ahmed", "Mohamed"], factoryId: "1" },
-    { id: "2", name: isRTL ? "سارة علي" : "Sara Ali", contacts: ["Sara", "Ali"], factoryId: "2" },
-    { id: "3", name: isRTL ? "محمود حسن" : "Mahmoud Hassan", contacts: ["Mahmoud", "Hassan"], factoryId: "1" },
-    { id: "4", name: "omar Magdy", contacts: ["Omar"], factoryId: "2" },
-    { id: "5", name: isRTL ? "ابو الليف" : "Abo Elleif", contacts: ["Abo Elleif"], factoryId: "2" },
-    { id: "6", name: isRTL ? "د.احمد عنب" : "Dr. Ahmed Enab", contacts: ["Dr. Ahmed"], factoryId: "3" },
   ];
 
   const selectedCustomer = customers.find(c => c.id === customer);

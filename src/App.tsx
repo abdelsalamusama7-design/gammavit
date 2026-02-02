@@ -23,6 +23,7 @@ import Factories from "./pages/customers/Factories";
 import Products from "./pages/inventory/Products";
 import Materials from "./pages/inventory/Materials";
 import StockMovement from "./pages/inventory/StockMovement";
+import Inventories from "./pages/inventory/Inventories";
 
 // Products pages
 import Categories from "./pages/products/Categories";
@@ -74,6 +75,7 @@ const App = () => (
             <Route path="/customers/factories" element={<ProtectedRoute><Factories /></ProtectedRoute>} />
             
             {/* Inventory routes */}
+            <Route path="/inventories" element={<ProtectedRoute><Inventories /></ProtectedRoute>} />
             <Route path="/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />
             <Route path="/materials" element={<ProtectedRoute><Materials /></ProtectedRoute>} />
             <Route path="/stock-movement" element={<ProtectedRoute><StockMovement /></ProtectedRoute>} />

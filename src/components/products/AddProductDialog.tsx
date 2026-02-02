@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import {
   Dialog,
@@ -19,15 +19,43 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
+import { useCustomersQuery } from "@/hooks/useCustomers";
+import { RefreshCw } from "lucide-react";
 
 interface AddProductDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
+// Generate random SKU
+const generateSKU = () => {
+  const prefix = "PRD";
+  const timestamp = Date.now().toString(36).toUpperCase().slice(-4);
+  const random = Math.random().toString(36).substring(2, 6).toUpperCase();
+  return `${prefix}${timestamp}${random}`;
+};
+
+// Generate random Barcode (EAN-13 format)
+const generateBarcode = () => {
+  const prefix = "200"; // Internal use prefix
+  let barcode = prefix;
+  for (let i = 0; i < 9; i++) {
+    barcode += Math.floor(Math.random() * 10).toString();
+  }
+  // Calculate check digit
+  let sum = 0;
+  for (let i = 0; i < 12; i++) {
+    sum += parseInt(barcode[i]) * (i % 2 === 0 ? 1 : 3);
+  }
+  const checkDigit = (10 - (sum % 10)) % 10;
+  return barcode + checkDigit;
+};
+
 const AddProductDialog = ({ open, onOpenChange }: AddProductDialogProps) => {
   const { i18n } = useTranslation();
   const isRTL = i18n.language === "ar";
+
+  const { data: customers = [], isLoading: loadingCustomers } = useCustomersQuery();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -43,6 +71,17 @@ const AddProductDialog = ({ open, onOpenChange }: AddProductDialogProps) => {
     description: "",
   });
   const [productImage, setProductImage] = useState<File | null>(null);
+
+  // Auto-generate SKU and Barcode when dialog opens
+  useEffect(() => {
+    if (open) {
+      setFormData(prev => ({
+        ...prev,
+        sku: generateSKU(),
+        barcode: generateBarcode(),
+      }));
+    }
+  }, [open]);
 
   const productTypes = [
     { value: "final", label: isRTL ? "نهائي" : "Final" },
@@ -60,16 +99,16 @@ const AddProductDialog = ({ open, onOpenChange }: AddProductDialogProps) => {
     { value: "sub2", label: isRTL ? "فئة فرعية 2" : "Subcategory 2" },
   ];
 
-  const customers = [
-    { value: "customer1", label: "ابو عدي" },
-    { value: "customer2", label: "د.احمد ممدوح" },
-    { value: "customer3", label: "د.عصام عدلي" },
-    { value: "customer4", label: "كيور" },
-    { value: "customer5", label: "فيوتشر" },
-  ];
-
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleRegenerateSKU = () => {
+    setFormData(prev => ({ ...prev, sku: generateSKU() }));
+  };
+
+  const handleRegenerateBarcode = () => {
+    setFormData(prev => ({ ...prev, barcode: generateBarcode() }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,24 +169,48 @@ const AddProductDialog = ({ open, onOpenChange }: AddProductDialogProps) => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="sku">SKU</Label>
-              <Input
-                id="sku"
-                value={formData.sku}
-                onChange={(e) => handleInputChange("sku", e.target.value)}
-              />
+              <Label htmlFor="sku">SKU ({isRTL ? "تلقائي" : "Auto-generated"})</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="sku"
+                  value={formData.sku}
+                  readOnly
+                  className="bg-muted flex-1"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={handleRegenerateSKU}
+                  title={isRTL ? "إعادة التوليد" : "Regenerate"}
+                >
+                  <RefreshCw className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
           </div>
 
           {/* Row 2: Barcode & Product Type */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="barcode">{isRTL ? "الباركود" : "Barcode"}</Label>
-              <Input
-                id="barcode"
-                value={formData.barcode}
-                onChange={(e) => handleInputChange("barcode", e.target.value)}
-              />
+              <Label htmlFor="barcode">{isRTL ? "الباركود" : "Barcode"} ({isRTL ? "تلقائي" : "Auto-generated"})</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="barcode"
+                  value={formData.barcode}
+                  readOnly
+                  className="bg-muted flex-1"
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={handleRegenerateBarcode}
+                  title={isRTL ? "إعادة التوليد" : "Regenerate"}
+                >
+                  <RefreshCw className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="productType">{isRTL ? "نوع المنتج" : "Product Type"}</Label>
@@ -203,14 +266,18 @@ const AddProductDialog = ({ open, onOpenChange }: AddProductDialogProps) => {
           {/* Row 4: Customer (full width) */}
           <div className="space-y-2">
             <Label htmlFor="customer">{isRTL ? "العميل" : "Customer"}</Label>
-            <Select value={formData.customer} onValueChange={(val) => handleInputChange("customer", val)}>
+            <Select 
+              value={formData.customer} 
+              onValueChange={(val) => handleInputChange("customer", val)}
+              disabled={loadingCustomers}
+            >
               <SelectTrigger>
                 <SelectValue placeholder={isRTL ? "-- اختر العميل --" : "-- Select Customer --"} />
               </SelectTrigger>
               <SelectContent>
                 {customers.map((cust) => (
-                  <SelectItem key={cust.value} value={cust.value}>
-                    {cust.label}
+                  <SelectItem key={cust.id} value={cust.id}>
+                    {cust.name} {cust.factory?.name ? `(${cust.factory.name})` : ""}
                   </SelectItem>
                 ))}
               </SelectContent>

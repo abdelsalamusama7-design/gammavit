@@ -79,7 +79,7 @@ const navItems: NavItem[] = [
     labelKey: "nav.inventory",
     icon: Package,
     submenu: [
-      { labelKey: "nav.allInventories", href: "/products", icon: List },
+      { labelKey: "nav.allInventories", href: "/inventories", icon: List },
       { labelKey: "nav.addInventory", href: "/products/new", icon: Plus, isAction: true },
       { labelKey: "nav.transferItems", href: "/stock-movement", icon: ArrowLeftRight },
     ],

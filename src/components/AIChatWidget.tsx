@@ -187,7 +187,8 @@ const AIChatWidget = () => {
           </div>
 
           {/* Messages */}
-          <ScrollArea className="flex-1 p-4" ref={scrollRef}>
+          <ScrollArea className="flex-1 p-4">
+            <div ref={scrollRef}>
             {messages.length === 0 && (
               <div className="flex flex-col items-center text-center py-8">
                 <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
@@ -242,6 +243,7 @@ const AIChatWidget = () => {
                   </div>
                 </div>
               )}
+            </div>
             </div>
           </ScrollArea>
 

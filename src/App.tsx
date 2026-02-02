@@ -26,6 +26,7 @@ import Categories from "./pages/products/Categories";
 
 // Purchases pages
 import PurchaseOrders from "./pages/purchases/PurchaseOrders";
+import CreatePurchaseOrder from "./pages/purchases/CreatePurchaseOrder";
 import Suppliers from "./pages/purchases/Suppliers";
 
 // Other pages
@@ -77,6 +78,7 @@ const App = () => (
             
             {/* Purchases routes */}
             <Route path="/purchase-orders" element={<ProtectedRoute><PurchaseOrders /></ProtectedRoute>} />
+            <Route path="/purchase-orders/create" element={<ProtectedRoute><CreatePurchaseOrder /></ProtectedRoute>} />
             <Route path="/suppliers" element={<ProtectedRoute><Suppliers /></ProtectedRoute>} />
             
             {/* Other routes */}

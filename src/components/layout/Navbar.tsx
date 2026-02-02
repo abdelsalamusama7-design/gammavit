@@ -70,7 +70,7 @@ const navItems: NavItem[] = [
     icon: ShoppingCart,
     submenu: [
       { labelKey: "nav.allOrders", href: "/orders", icon: List },
-      { labelKey: "nav.createOrder", href: "/orders/new", icon: Plus, isAction: true },
+      { labelKey: "nav.createOrder", href: "/orders/create", icon: Plus, isAction: true },
       { labelKey: "nav.quotations", href: "/quotations", icon: FileText },
       { labelKey: "nav.customers", href: "/customers", icon: UserPlus },
     ],

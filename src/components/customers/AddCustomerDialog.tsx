@@ -17,9 +17,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { useCustomers } from "@/contexts/CustomersContext";
+import { useFactories, useAddCustomer } from "@/hooks/useCustomers";
+import { Loader2 } from "lucide-react";
 
 interface AddCustomerDialogProps {
   open: boolean;
@@ -29,7 +29,9 @@ interface AddCustomerDialogProps {
 const AddCustomerDialog = ({ open, onOpenChange }: AddCustomerDialogProps) => {
   const { i18n } = useTranslation();
   const isRTL = i18n.language === "ar";
-  const { addCustomer } = useCustomers();
+
+  const { data: factories = [], isLoading: loadingFactories } = useFactories();
+  const addCustomer = useAddCustomer();
 
   // Basic Info
   const [customerName, setCustomerName] = useState("");
@@ -57,17 +59,6 @@ const AddCustomerDialog = ({ open, onOpenChange }: AddCustomerDialogProps) => {
   // Documents
   const [notes, setNotes] = useState("");
 
-  const factories = [
-    { id: "", name: isRTL ? "-- غير محدد --" : "-- Not Assigned --" },
-    { id: "1", name: "GammaVet" },
-    { id: "2", name: "Naturous" },
-  ];
-
-  const getFactoryName = (factoryId: string) => {
-    const f = factories.find(f => f.id === factoryId);
-    return f?.name || "N/A";
-  };
-
   const handleSave = () => {
     if (!customerName.trim()) {
       toast.error(isRTL ? "يرجى إدخال اسم العميل" : "Please enter customer name");
@@ -82,20 +73,38 @@ const AddCustomerDialog = ({ open, onOpenChange }: AddCustomerDialogProps) => {
       return;
     }
 
-    // Add customer to context
-    addCustomer({
-      name: customerName,
-      type: customerType === "factory" ? "Factory" : "Representative",
-      factoryId: factory || "3",
-      factoryName: getFactoryName(factory || "3"),
-      email: email,
-      phone: phone,
-      walletBalance: initialWalletBalance || "0.00",
-      contacts: contactName ? [contactName] : [customerName],
-    });
-
-    toast.success(isRTL ? "تم حفظ العميل بنجاح" : "Customer saved successfully");
-    handleClose();
+    addCustomer.mutate(
+      {
+        name: customerName,
+        type: customerType === "factory" ? "Factory" : "Representative",
+        factory_id: factory || null,
+        email: email || null,
+        phone: phone || null,
+        tax_number: taxNumber || null,
+        wallet_balance: parseFloat(initialWalletBalance) || 0,
+        address_line1: addressLine1 || null,
+        address_line2: addressLine2 || null,
+        city: city || null,
+        state: state || null,
+        postal_code: postalCode || null,
+        country: country || null,
+        notes: notes || null,
+        contact_name: contactName || null,
+        contact_position: contactPosition || null,
+        contact_email: contactEmail || null,
+        contact_phone: contactPhone || null,
+      },
+      {
+        onSuccess: () => {
+          toast.success(isRTL ? "تم حفظ العميل بنجاح" : "Customer saved successfully");
+          handleClose();
+        },
+        onError: (error) => {
+          console.error("Error adding customer:", error);
+          toast.error(isRTL ? "فشل في حفظ العميل" : "Failed to save customer");
+        },
+      }
+    );
   };
 
   const handleClose = () => {
@@ -178,14 +187,14 @@ const AddCustomerDialog = ({ open, onOpenChange }: AddCustomerDialogProps) => {
 
             <div className="space-y-2">
               <Label>{isRTL ? "المصنع" : "Factory"}</Label>
-              <Select value={factory} onValueChange={setFactory}>
+              <Select value={factory} onValueChange={setFactory} disabled={loadingFactories}>
                 <SelectTrigger>
                   <SelectValue placeholder={isRTL ? "-- غير محدد --" : "-- Not Assigned --"} />
                 </SelectTrigger>
                 <SelectContent className="bg-background z-50">
                   {factories.map((f) => (
-                    <SelectItem key={f.id || "none"} value={f.id || "none"}>
-                      {f.name}
+                    <SelectItem key={f.id} value={f.id}>
+                      {isRTL ? f.name_ar || f.name : f.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -368,6 +377,15 @@ const AddCustomerDialog = ({ open, onOpenChange }: AddCustomerDialogProps) => {
               </div>
             </div>
 
+            <div className="space-y-2">
+              <Label>{isRTL ? "ملاحظات" : "Notes"}</Label>
+              <Input
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder={isRTL ? "أي ملاحظات إضافية" : "Any additional notes"}
+              />
+            </div>
+
             <p className="text-sm text-muted-foreground mt-4">
               {isRTL 
                 ? "يتم تخزين الملفات بشكل آمن تحت مستندات العميل للرجوع إليها لاحقاً."
@@ -382,7 +400,8 @@ const AddCustomerDialog = ({ open, onOpenChange }: AddCustomerDialogProps) => {
           <Button variant="secondary" onClick={handleClose}>
             {isRTL ? "إغلاق" : "Close"}
           </Button>
-          <Button onClick={handleSave}>
+          <Button onClick={handleSave} disabled={addCustomer.isPending}>
+            {addCustomer.isPending && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
             {isRTL ? "حفظ العميل" : "Save Customer"}
           </Button>
         </div>

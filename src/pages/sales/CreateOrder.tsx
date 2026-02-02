@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Trash2, Search } from "lucide-react";
+import { Trash2, Search, Loader2 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,7 +26,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import SelectProductDialog from "@/components/purchases/SelectProductDialog";
-import { useCustomers } from "@/contexts/CustomersContext";
+import { useCustomersQuery, useFactories, useCustomerContacts } from "@/hooks/useCustomers";
 
 interface OrderItem {
   id: string;
@@ -43,7 +43,9 @@ const CreateSalesOrder = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const isRTL = i18n.language === "ar";
-  const { customers } = useCustomers();
+
+  const { data: customers = [], isLoading: loadingCustomers } = useCustomersQuery();
+  const { data: factories = [], isLoading: loadingFactories } = useFactories();
 
   // Generate Order ID
   const orderId = `ORD-${new Date().toISOString().slice(0, 10).replace(/-/g, "")}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
@@ -64,22 +66,17 @@ const CreateSalesOrder = () => {
   const [shippingCost, setShippingCost] = useState("no_shipping");
   const [shippingAmount, setShippingAmount] = useState(0);
 
-  // Factories data
-  const factories = [
-    { id: "1", name: "GammaVet", nameAr: "جاما فيت" },
-    { id: "2", name: "Naturous", nameAr: "ناتورس" },
-    { id: "3", name: "N/A", nameAr: "غير محدد" },
-  ];
+  const { data: contacts = [] } = useCustomerContacts(customer || null);
 
   const selectedCustomer = customers.find(c => c.id === customer);
-  const selectedFactory = factories.find(f => f.id === selectedCustomer?.factoryId);
+  const selectedFactory = selectedCustomer?.factory;
 
   // Auto-set factory when customer changes
   const handleCustomerChange = (customerId: string) => {
     setCustomer(customerId);
     const cust = customers.find(c => c.id === customerId);
-    if (cust?.factoryId) {
-      setFactory(cust.factoryId);
+    if (cust?.factory_id) {
+      setFactory(cust.factory_id);
     }
     setContactPerson(""); // Reset contact person when customer changes
   };
@@ -242,7 +239,7 @@ const CreateSalesOrder = () => {
               <div className="space-y-2">
                 <Label>{isRTL ? "المصنع" : "Factory"}</Label>
                 <Input 
-                  value={selectedFactory ? (isRTL ? selectedFactory.nameAr : selectedFactory.name) : (isRTL ? "اختر العميل أولاً" : "Select customer first")} 
+                  value={selectedFactory ? (isRTL ? selectedFactory.name_ar || selectedFactory.name : selectedFactory.name) : (isRTL ? "اختر العميل أولاً" : "Select customer first")} 
                   disabled 
                   className="bg-muted"
                 />
@@ -260,9 +257,9 @@ const CreateSalesOrder = () => {
                     <SelectValue placeholder={isRTL ? "اختر العميل أولاً" : "Select Customer First"} />
                   </SelectTrigger>
                   <SelectContent>
-                    {selectedCustomer?.contacts.map((contact) => (
-                      <SelectItem key={contact} value={contact}>
-                        {contact}
+                    {contacts.map((contact) => (
+                      <SelectItem key={contact.id} value={contact.name}>
+                        {contact.name}
                       </SelectItem>
                     ))}
                   </SelectContent>

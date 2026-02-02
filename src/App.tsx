@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { CustomersProvider } from "@/contexts/CustomersContext";
 import AIChatWidget from "@/components/AIChatWidget";
 import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
@@ -63,11 +62,10 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <CustomersProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
           <Routes>
             {/* Public routes */}
             <Route path="/auth" element={<Auth />} />
@@ -129,7 +127,6 @@ const App = () => (
           <AIChatWidget />
         </BrowserRouter>
       </TooltipProvider>
-      </CustomersProvider>
     </AuthProvider>
   </QueryClientProvider>
 );

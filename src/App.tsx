@@ -29,6 +29,7 @@ import TransferItems from "./pages/inventory/TransferItems";
 
 // Products pages
 import Categories from "./pages/products/Categories";
+import BulkUpload from "./pages/products/BulkUpload";
 
 // Purchases pages
 import PurchaseOrders from "./pages/purchases/PurchaseOrders";
@@ -87,6 +88,8 @@ const App = () => (
             
             {/* Products routes */}
             <Route path="/products-list" element={<ProtectedRoute><Products /></ProtectedRoute>} />
+            <Route path="/categories" element={<ProtectedRoute><Categories /></ProtectedRoute>} />
+            <Route path="/products/upload" element={<ProtectedRoute><BulkUpload /></ProtectedRoute>} />
             <Route path="/categories" element={<ProtectedRoute><Categories /></ProtectedRoute>} />
             
             {/* Purchases routes */}

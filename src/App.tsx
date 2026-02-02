@@ -17,6 +17,7 @@ import CreateSalesOrder from "./pages/sales/CreateOrder";
 import Quotations from "./pages/sales/Quotations";
 import CreateQuotation from "./pages/sales/CreateQuotation";
 import Customers from "./pages/sales/Customers";
+import Factories from "./pages/customers/Factories";
 
 // Inventory pages
 import Products from "./pages/inventory/Products";
@@ -70,6 +71,7 @@ const App = () => (
             <Route path="/quotations" element={<ProtectedRoute><Quotations /></ProtectedRoute>} />
             <Route path="/quotations/create" element={<ProtectedRoute><CreateQuotation /></ProtectedRoute>} />
             <Route path="/customers" element={<ProtectedRoute><Customers /></ProtectedRoute>} />
+            <Route path="/customers/factories" element={<ProtectedRoute><Factories /></ProtectedRoute>} />
             
             {/* Inventory routes */}
             <Route path="/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />

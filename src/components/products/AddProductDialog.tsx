@@ -84,9 +84,8 @@ const AddProductDialog = ({ open, onOpenChange }: AddProductDialogProps) => {
   }, [open]);
 
   const productTypes = [
-    { value: "final", label: isRTL ? "نهائي" : "Final" },
-    { value: "material", label: isRTL ? "خام" : "Material" },
-    { value: "primary", label: isRTL ? "أساسي" : "Primary" },
+    { value: "final", label: isRTL ? "منتج نهائي" : "Final Product" },
+    { value: "raw_material", label: isRTL ? "مادة خام" : "Raw Material" },
   ];
 
   const categories = [

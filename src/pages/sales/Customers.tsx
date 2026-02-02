@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { Plus, Building2, FileSpreadsheet, Eye, Pencil, Users, Wallet, Lock, MessageCircle, Trash2, Settings } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
@@ -40,6 +40,19 @@ const Customers = () => {
   const [entriesPerPage, setEntriesPerPage] = useState("25");
   const [currentPage, setCurrentPage] = useState(1);
   const [isAddCustomerOpen, setIsAddCustomerOpen] = useState(false);
+  const csvInputRef = useRef<HTMLInputElement>(null);
+
+  const handleCsvUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      toast.success(isRTL ? `تم اختيار الملف: ${file.name}` : `File selected: ${file.name}`);
+      // Here you would process the CSV file
+    }
+    // Reset input to allow selecting the same file again
+    if (csvInputRef.current) {
+      csvInputRef.current.value = "";
+    }
+  };
 
   const customers = [
     { id: 2, name: "Eslam 1", type: "Factory", factory: "GammaVet", email: "", phone: "01000000000", walletBalance: "0.00" },
@@ -88,7 +101,18 @@ const Customers = () => {
               <Building2 className="w-4 h-4" />
               {isRTL ? "إدارة المصانع" : "Manage Factories"}
             </Button>
-            <Button variant="outline" className="text-primary border-primary hover:bg-primary/10">
+            <input
+              type="file"
+              ref={csvInputRef}
+              accept=".csv"
+              onChange={handleCsvUpload}
+              className="hidden"
+            />
+            <Button 
+              variant="outline" 
+              className="text-primary border-primary hover:bg-primary/10"
+              onClick={() => csvInputRef.current?.click()}
+            >
               <FileSpreadsheet className="w-4 h-4" />
               {isRTL ? "نموذج CSV" : "Sample CSV"}
             </Button>

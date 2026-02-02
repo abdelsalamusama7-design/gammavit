@@ -1,5 +1,6 @@
 import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { Plus, Building2, FileSpreadsheet, Eye, Pencil, Users, Wallet, Lock, MessageCircle, Trash2, Settings } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,7 @@ import AddCustomerDialog from "@/components/customers/AddCustomerDialog";
 
 const Customers = () => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const isRTL = i18n.language === "ar";
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -97,7 +99,7 @@ const Customers = () => {
             </span>
           </h1>
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline">
+            <Button variant="outline" onClick={() => navigate("/customers/factories")}>
               <Building2 className="w-4 h-4" />
               {isRTL ? "إدارة المصانع" : "Manage Factories"}
             </Button>

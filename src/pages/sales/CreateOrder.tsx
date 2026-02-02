@@ -518,6 +518,7 @@ const CreateSalesOrder = () => {
         open={isProductDialogOpen}
         onOpenChange={setIsProductDialogOpen}
         onSelect={handleSelectProduct}
+        filterType="final_product"
       />
     </div>
   );

@@ -32,9 +32,10 @@ interface SelectProductDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSelect: (product: Product) => void;
+  filterType?: "final_product" | "raw_material" | "all";
 }
 
-const SelectProductDialog = ({ open, onOpenChange, onSelect }: SelectProductDialogProps) => {
+const SelectProductDialog = ({ open, onOpenChange, onSelect, filterType = "all" }: SelectProductDialogProps) => {
   const { i18n } = useTranslation();
   const isRTL = i18n.language === "ar";
   const [searchTerm, setSearchTerm] = useState("");
@@ -57,11 +58,20 @@ const SelectProductDialog = ({ open, onOpenChange, onSelect }: SelectProductDial
     { id: "14", sku: "PRD001076", name: "Sodium Silinate", nameAr: "صوديوم سيلينات", category: "RM | Raw Materials", categoryAr: "خامات", price: 120 },
   ];
 
-  const filteredProducts = products.filter(product => 
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.nameAr.includes(searchTerm) ||
-    product.sku.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredProducts = products.filter(product => {
+    // First filter by type if specified
+    if (filterType === "final_product" && !product.category.includes("FP |")) {
+      return false;
+    }
+    if (filterType === "raw_material" && !product.category.includes("RM |")) {
+      return false;
+    }
+    
+    // Then filter by search term
+    return product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.nameAr.includes(searchTerm) ||
+      product.sku.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   const handleSelect = (product: Product) => {
     onSelect(product);

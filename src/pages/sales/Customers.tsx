@@ -30,6 +30,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import AddCustomerDialog from "@/components/customers/AddCustomerDialog";
 
 const Customers = () => {
   const { t, i18n } = useTranslation();
@@ -38,6 +39,7 @@ const Customers = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState("25");
   const [currentPage, setCurrentPage] = useState(1);
+  const [isAddCustomerOpen, setIsAddCustomerOpen] = useState(false);
 
   const customers = [
     { id: 2, name: "Eslam 1", type: "Factory", factory: "GammaVet", email: "", phone: "01000000000", walletBalance: "0.00" },
@@ -90,7 +92,7 @@ const Customers = () => {
               <FileSpreadsheet className="w-4 h-4" />
               {isRTL ? "نموذج CSV" : "Sample CSV"}
             </Button>
-            <Button>
+            <Button onClick={() => setIsAddCustomerOpen(true)}>
               <Plus className="w-4 h-4" />
               {isRTL ? "إضافة عميل" : "Add Customer"}
             </Button>
@@ -251,6 +253,11 @@ const Customers = () => {
           <span>Version 1.0.0</span>
         </div>
       </main>
+
+      <AddCustomerDialog
+        open={isAddCustomerOpen}
+        onOpenChange={setIsAddCustomerOpen}
+      />
     </div>
   );
 };

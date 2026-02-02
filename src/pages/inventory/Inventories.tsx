@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { Plus, ArrowLeftRight, Eye, Pencil, Trash2 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,7 @@ import { toast } from "sonner";
 import AddInventoryDialog from "@/components/inventories/AddInventoryDialog";
 
 const Inventories = () => {
+  const navigate = useNavigate();
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === "ar";
@@ -74,7 +76,7 @@ const Inventories = () => {
   };
 
   const handleTransferItems = () => {
-    toast.info(isRTL ? "تحويل العناصر" : "Transfer items");
+    navigate("/inventories/transfer");
   };
 
   return (

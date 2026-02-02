@@ -288,7 +288,9 @@ const Navbar = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="min-w-[160px] bg-background">
-                <DropdownMenuItem className="py-3">{t("nav.profile")}</DropdownMenuItem>
+                <DropdownMenuItem className="py-3 cursor-pointer" onClick={() => navigate("/profile")}>
+                  {t("nav.profile")}
+                </DropdownMenuItem>
                 <DropdownMenuItem className="py-3">{t("nav.settings")}</DropdownMenuItem>
                 <div className="sm:hidden px-2 py-2">
                   <LanguageSwitcher />

@@ -54,6 +54,9 @@ import Accounts from "./pages/finance/Accounts";
 import Expenses from "./pages/finance/Expenses";
 import Reports from "./pages/finance/Reports";
 
+// Profile page
+import Profile from "./pages/Profile";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -114,6 +117,9 @@ const App = () => (
             <Route path="/accounts" element={<ProtectedRoute><Accounts /></ProtectedRoute>} />
             <Route path="/expenses" element={<ProtectedRoute><Expenses /></ProtectedRoute>} />
             <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
+            
+            {/* Profile route */}
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

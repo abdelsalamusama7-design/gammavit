@@ -326,24 +326,35 @@ const AddCustomerDialog = ({ open, onOpenChange }: AddCustomerDialogProps) => {
 
           {/* Documents Tab */}
           <TabsContent value="documents" className="space-y-4 mt-4">
-            <div className="space-y-2">
-              <Label>{isRTL ? "ملاحظات" : "Notes"}</Label>
-              <Textarea
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder={isRTL ? "أدخل أي ملاحظات إضافية..." : "Enter any additional notes..."}
-                className="min-h-[120px]"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label>{isRTL ? "رفع المستندات" : "Upload Documents"}</Label>
-              <div className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center">
-                <p className="text-muted-foreground">
-                  {isRTL ? "اسحب وأفلت الملفات هنا أو انقر للتحميل" : "Drag and drop files here or click to upload"}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>{isRTL ? "صورة البطاقة الضريبية (PDF/صورة)" : "Tax Registration Scan (PDF/Image)"}</Label>
+                <Input
+                  type="file"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  className="cursor-pointer"
+                />
+                <p className="text-xs text-muted-foreground">
+                  {isRTL ? "رفع اختياري؛ مرتبط بحقل الرقم الضريبي." : "Optional upload; links to the tax number field."}
                 </p>
               </div>
+
+              <div className="space-y-2">
+                <Label>{isRTL ? "صورة السجل التجاري" : "Commercial Registration Scan"}</Label>
+                <Input
+                  type="file"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  className="cursor-pointer"
+                />
+              </div>
             </div>
+
+            <p className="text-sm text-muted-foreground mt-4">
+              {isRTL 
+                ? "يتم تخزين الملفات بشكل آمن تحت مستندات العميل للرجوع إليها لاحقاً."
+                : "Files are stored securely under customer documents for later reference."
+              }
+            </p>
           </TabsContent>
         </Tabs>
 

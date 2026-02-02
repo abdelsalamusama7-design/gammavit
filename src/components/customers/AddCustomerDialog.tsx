@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { useCustomers } from "@/contexts/CustomersContext";
 
 interface AddCustomerDialogProps {
   open: boolean;
@@ -28,6 +29,7 @@ interface AddCustomerDialogProps {
 const AddCustomerDialog = ({ open, onOpenChange }: AddCustomerDialogProps) => {
   const { i18n } = useTranslation();
   const isRTL = i18n.language === "ar";
+  const { addCustomer } = useCustomers();
 
   // Basic Info
   const [customerName, setCustomerName] = useState("");
@@ -61,6 +63,11 @@ const AddCustomerDialog = ({ open, onOpenChange }: AddCustomerDialogProps) => {
     { id: "2", name: "Naturous" },
   ];
 
+  const getFactoryName = (factoryId: string) => {
+    const f = factories.find(f => f.id === factoryId);
+    return f?.name || "N/A";
+  };
+
   const handleSave = () => {
     if (!customerName.trim()) {
       toast.error(isRTL ? "يرجى إدخال اسم العميل" : "Please enter customer name");
@@ -74,6 +81,18 @@ const AddCustomerDialog = ({ open, onOpenChange }: AddCustomerDialogProps) => {
       toast.error(isRTL ? "يرجى إدخال رقم الهاتف" : "Please enter phone number");
       return;
     }
+
+    // Add customer to context
+    addCustomer({
+      name: customerName,
+      type: customerType === "factory" ? "Factory" : "Representative",
+      factoryId: factory || "3",
+      factoryName: getFactoryName(factory || "3"),
+      email: email,
+      phone: phone,
+      walletBalance: initialWalletBalance || "0.00",
+      contacts: contactName ? [contactName] : [customerName],
+    });
 
     toast.success(isRTL ? "تم حفظ العميل بنجاح" : "Customer saved successfully");
     handleClose();

@@ -31,6 +31,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { toast } from "@/hooks/use-toast";
+import AddProductDialog from "@/components/products/AddProductDialog";
 
 const FinalProducts = () => {
   const { t, i18n } = useTranslation();
@@ -39,6 +40,7 @@ const FinalProducts = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [entriesPerPage, setEntriesPerPage] = useState("25");
   const [customerFilter, setCustomerFilter] = useState("all");
+  const [addProductOpen, setAddProductOpen] = useState(false);
 
   const products = [
     { id: "PRD000363", name: "All mectin الامكتين", type: "Final", category: "FP | Final Product | منتج نهائي", subcategory: "null", customer: "ابو عدي", unitPrice: "0.00", costPrice: "-" },
@@ -86,12 +88,14 @@ const FinalProducts = () => {
               <Upload className="w-4 h-4" />
               {isRTL ? "رفع مجمع" : "Bulk Upload"}
             </Button>
-            <Button>
+            <Button onClick={() => setAddProductOpen(true)}>
               <Plus className="w-4 h-4" />
               {isRTL ? "إضافة منتج" : "Add Product"}
             </Button>
           </div>
         </div>
+
+        <AddProductDialog open={addProductOpen} onOpenChange={setAddProductOpen} />
 
         {/* Filter Section */}
         <div className="mb-4">

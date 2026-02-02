@@ -48,50 +48,44 @@ const AddFactoryDialog = ({ open, onOpenChange }: AddFactoryDialogProps) => {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>
-            {isRTL ? "إضافة مصنع جديد" : "Add New Factory"}
+            {isRTL ? "مصنع" : "Factory"}
           </DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 mt-4">
           <div className="space-y-2">
-            <Label>{isRTL ? "اسم المصنع*" : "Factory Name*"}</Label>
+            <Label>{isRTL ? "الاسم*" : "Name*"}</Label>
             <Input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder={isRTL ? "أدخل اسم المصنع" : "Enter factory name"}
             />
           </div>
 
           <div className="space-y-2">
-            <Label>{isRTL ? "جهة الاتصال" : "Contact"}</Label>
+            <Label>{isRTL ? "جهة الاتصال" : "Contact Person"}</Label>
             <Input
               value={contact}
               onChange={(e) => setContact(e.target.value)}
-              placeholder={isRTL ? "أدخل اسم جهة الاتصال" : "Enter contact name"}
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>{isRTL ? "الهاتف" : "Phone"}</Label>
-              <Input
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder={isRTL ? "أدخل رقم الهاتف" : "Enter phone number"}
-              />
-            </div>
+          <div className="space-y-2">
+            <Label>{isRTL ? "الهاتف" : "Phone"}</Label>
+            <Input
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </div>
 
-            <div className="space-y-2">
-              <Label>{isRTL ? "واتساب" : "WhatsApp"}</Label>
-              <Input
-                value={whatsapp}
-                onChange={(e) => setWhatsapp(e.target.value)}
-                placeholder={isRTL ? "أدخل رقم الواتساب" : "Enter WhatsApp number"}
-              />
-            </div>
+          <div className="space-y-2">
+            <Label>{isRTL ? "واتساب" : "WhatsApp"}</Label>
+            <Input
+              value={whatsapp}
+              onChange={(e) => setWhatsapp(e.target.value)}
+            />
           </div>
 
           <div className="space-y-2">
@@ -99,19 +93,18 @@ const AddFactoryDialog = ({ open, onOpenChange }: AddFactoryDialogProps) => {
             <Textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder={isRTL ? "أدخل أي ملاحظات..." : "Enter any notes..."}
               className="min-h-[80px]"
             />
           </div>
         </div>
 
         {/* Footer Buttons */}
-        <div className="flex justify-end gap-2 mt-6 pt-4 border-t">
+        <div className="flex justify-end gap-2 mt-4">
           <Button variant="secondary" onClick={handleClose}>
             {isRTL ? "إغلاق" : "Close"}
           </Button>
           <Button onClick={handleSave}>
-            {isRTL ? "حفظ المصنع" : "Save Factory"}
+            {isRTL ? "حفظ" : "Save"}
           </Button>
         </div>
       </DialogContent>
